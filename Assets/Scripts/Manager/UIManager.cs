@@ -8,30 +8,27 @@ public class UIManager : MonoSingleton<UIManager>
 {
     [SerializeField] Canvas _mainCanvas;
 
-
-    [Header("Black Shade Ref")]
-    [SerializeField] Button _blackShadeButton;
-    [SerializeField] Image _blackShadeImg;
+    [SerializeField] MenuView _menuView;
+    [SerializeField] GameView _gameView;
+    [SerializeField] EndView _endView;
 
     View _currentView;
-
     public Canvas MainCanvas { get => _mainCanvas; }
 
-
-    Tweener _blackShadeTweener;
-
-    public void Start()
+    public void Init()
     {
         GameManager.Instance.OnGameStateChanged += HandleStateChange;
 
         InitView();
 
-        //ChangeView(_startView);
+        ChangeView(_gameView);
     }
 
     public void InitView()
     {
-        HideBlackShade();
+        _menuView.Init();
+        _gameView.Init();
+        _endView.Init();
     }
 
     public void ChangeView(View newPanel)
@@ -61,7 +58,7 @@ public class UIManager : MonoSingleton<UIManager>
     {
         switch (newState)
         {
-            case GAMESTATE.START:
+            case GAMESTATE.MENU:
                 HandleMenu();
                 break;
             case GAMESTATE.GAME:
@@ -77,35 +74,16 @@ public class UIManager : MonoSingleton<UIManager>
 
     void HandleMenu()
     {
-        //ChangeView(_startView);
+        ChangeView(_menuView);
     }
     void HandleGame()
     {
-        //ChangeView(_gameView);
+        ChangeView(_gameView);
     }
     void HandleEnd()
     {
-        // ChangeView(_endView);
+        ChangeView(_endView);
     }
 
     #endregion
-
-    public void ShowBlackShade()
-    {
-        if (_blackShadeTweener.IsActive()) _blackShadeTweener.Kill();
-
-        _blackShadeTweener = _blackShadeImg.DOFade(1, .5f);
-
-        _blackShadeImg.raycastTarget = true;
-    }
-
-    public void HideBlackShade(bool _instant = true)
-    {
-        if (_blackShadeTweener.IsActive()) _blackShadeTweener.Kill();
-
-        if (_instant) _blackShadeTweener = _blackShadeImg.DOFade(0f, 0);
-        else _blackShadeTweener = _blackShadeImg.DOFade(0f, .5f);
-
-        _blackShadeImg.raycastTarget = false;
-    }
 }

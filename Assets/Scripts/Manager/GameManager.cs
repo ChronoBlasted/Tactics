@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 
 public enum GAMESTATE
 {
-    START,
+    MENU,
     GAME,
     END
 }
@@ -14,11 +14,14 @@ public class GameManager : MonoSingleton<GameManager>
 {
     public GAMESTATE gameState;
 
-    public  event Action<GAMESTATE> OnGameStateChanged;
+    public event Action<GAMESTATE> OnGameStateChanged;
 
     private void Awake()
     {
-        gameState = GAMESTATE.START;
+        gameState = GAMESTATE.MENU;
+
+        UIManager.Instance.Init();
+
 
         Time.timeScale = 1.0f;
     }
@@ -41,7 +44,7 @@ public class GameManager : MonoSingleton<GameManager>
 
         switch (gameState)
         {
-            case GAMESTATE.START:
+            case GAMESTATE.MENU:
                 break;
             case GAMESTATE.GAME:
                 StartGame();
@@ -56,7 +59,7 @@ public class GameManager : MonoSingleton<GameManager>
         OnGameStateChanged?.Invoke(gameState);
     }
 
-    public void UpdateStateToStart() => UpdateGameState(GAMESTATE.START);
+    public void UpdateStateToStart() => UpdateGameState(GAMESTATE.MENU);
     public void UpdateStateToGame() => UpdateGameState(GAMESTATE.GAME);
     public void UpdateStateToEnd() => UpdateGameState(GAMESTATE.END);
 

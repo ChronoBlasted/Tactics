@@ -106,7 +106,7 @@ public class InputManagers : MonoBehaviour
     {
         switch (newState)
         {
-            case GAMESTATE.START:
+            case GAMESTATE.MENU:
                 break;
             case GAMESTATE.GAME:
 
