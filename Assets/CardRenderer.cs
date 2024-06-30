@@ -1,18 +1,31 @@
-using System.Collections;
-using System.Collections.Generic;
+using DG.Tweening;
+using System;
+using TMPro;
 using UnityEngine;
-using UnityEngine.UIElements;
+using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
-public class CardRenderer : MonoBehaviour
+public class CardRenderer : MonoBehaviour,
+    IDragHandler, IBeginDragHandler, IEndDragHandler,
+    IPointerEnterHandler, IPointerExitHandler,
+    IPointerUpHandler, IPointerDownHandler
 {
     EntityData data;
 
-    [SerializeField] SpriteRenderer background;
-    [SerializeField] SpriteRenderer visual;
-    [SerializeField] TextMesh nameTxt;
-    [SerializeField] TextMesh descTxt;
-    [SerializeField] TextMesh attackTxt;
-    [SerializeField] TextMesh heatlhTxt;
+    [SerializeField] Image background;
+    [SerializeField] Image visual;
+    [SerializeField] TMP_Text nameTxt;
+    [SerializeField] TMP_Text descTxt;
+    [SerializeField] TMP_Text attackTxt;
+    [SerializeField] TMP_Text heatlhTxt;
+
+    public event Action OnBeginDragEvent;
+    public event Action OnEndDragEvent;
+
+    bool isSelected;
+    bool isInHand = true;
+
+    Tween HoverTween;
 
     public void Init(EntityData newData)
     {
@@ -25,4 +38,71 @@ public class CardRenderer : MonoBehaviour
         attackTxt.text = data.attack.ToString();
         heatlhTxt.text = data.maxHealth.ToString();
     }
+
+    void PlayCard()
+    {
+        isInHand = false;
+
+        Destroy(gameObject.transform.parent.gameObject);
+    }
+
+    #region Drag
+
+    public void OnBeginDrag(PointerEventData eventData)
+    {
+        OnBeginDragEvent?.Invoke();
+    }
+
+    public void OnDrag(PointerEventData eventData)
+    {
+        transform.position = eventData.position;
+    }
+
+    public void OnEndDrag(PointerEventData eventData)
+    {
+        OnEndDragEvent?.Invoke();
+
+        if (transform.position.y > 400)
+        {
+            PlayCard();
+        }
+        else
+        {
+            transform.localPosition = Vector3.zero;
+        }
+    }
+
+    #endregion
+
+    #region Pointer
+
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        if (isInHand)
+        {
+            HoverTween = transform.DOLocalMoveY(200, .2f);
+        }
+    }
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        if (isInHand)
+        {
+            HoverTween = transform.DOLocalMoveY(0, .2f);
+        }
+    }
+
+    public void OnPointerDown(PointerEventData eventData)
+    {
+        HoverTween.Kill();
+
+        isSelected = true;
+
+    }
+    public void OnPointerUp(PointerEventData eventData)
+    {
+        HoverTween.Kill();
+
+        isSelected = false;
+    }
+    #endregion
 }
