@@ -21,9 +21,7 @@ public class ACard : ALife
 
     public void PlayCard()
     {
-        var data = new object[] { this };
 
-        GameEventSystem.Instance.Send(EventType.PLAYCARD, data);
     }
 
     public void PlaceOnAttack()

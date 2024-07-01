@@ -61,7 +61,9 @@ public class CardRenderer : MonoBehaviour,
         {
             isInHand = false;
 
-            card.PlayCard();
+            var data = new object[] { this };
+
+            GameEventSystem.Instance.Send(EventType.PLAYCARD, data);
         }
         else
         {
