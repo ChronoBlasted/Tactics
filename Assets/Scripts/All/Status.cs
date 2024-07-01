@@ -8,9 +8,8 @@ public enum Status
     STUN,
     BURN,
     CURSE,
-    GROWTH ,
-    FEARSOME,
-    BRASH,
+    GROWTH,
+    VIGILANT,
     REGENERATION,
     ROBUST,
     OVERWHELM

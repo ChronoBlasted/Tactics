@@ -1,4 +1,6 @@
+using System.Linq;
 using BaseTemplate.Behaviours;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class MatchManager : MonoSingleton<MatchManager>
@@ -74,5 +76,38 @@ public class MatchManager : MonoSingleton<MatchManager>
     public void AddStatus(Status statusToAdd, ACard cardToAffect)
     {
         cardToAffect.StatusList.Add(statusToAdd);
+    }
+
+    public void RemoveStatus( ACard cardToEffect , Status statusToRemove)
+    {
+        cardToEffect.StatusList.Remove(statusToRemove);
+    }
+    
+    public void ProcessAttack(object[] cards, APlayer playerDefend)
+    {
+        ACard attacker = (ACard)cards[0];
+        ACard defenser = (ACard)cards[1];
+        if (defenser == null)
+        {
+            playerDefend.TakeDamage(attacker.GetAttack());
+            return;
+        }
+        if (attacker.StatusList.Contains(Status.OVERWHELM))
+        {
+            if (attacker.GetAttack()>defenser.Health)
+            {
+                playerDefend.TakeDamage(attacker.GetAttack() - defenser.Health) ;
+            }
+        }
+        if (!attacker.StatusList.Contains(Status.STUN)) attacker.Attack(defenser);
+        defenser.Attack(attacker);
+        if (attacker.StatusList.Contains(Status.BURN)) AddStatus(Status.BURN, defenser);
+        if (attacker.StatusList.Contains(Status.CURSE)) AddStatus(Status.CURSE, defenser);
+        if (defenser.StatusList.Contains(Status.VIGILANT))
+        {
+            RemoveStatus(defenser, Status.VIGILANT);
+            return;
+        }
+        if (attacker.StatusList.Contains(Status.STUN)) AddStatus(Status.STUN, defenser);
     }
 }

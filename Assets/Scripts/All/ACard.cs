@@ -16,9 +16,11 @@ public class ACard : ALife
         GameEventSystem.Instance.AddEvent(EventType.ONENDTURN, OnEndTurn);
     }
 
-    public void Attack()
+    public void Attack(ALife enemyLife)
     {
-
+        if (StatusList.Contains(Status.STUN)) return;
+        TakeDamage(GetAttack()) ;
+        
     }
 
     public void PlayCard()
@@ -28,6 +30,7 @@ public class ACard : ALife
 
     public override bool TakeDamage(int amountDamage)
     {
+        if (StatusList.Contains(Status.ROBUST)) amountDamage--;
         return base.TakeDamage(amountDamage);
     }
 
@@ -57,6 +60,7 @@ public class ACard : ALife
 
     public void OnStartTurn(object[] actionData = null)
     {
+        if (StatusList.Contains(Status.REGENERATION)) Health = GetMaxHealth();
     }
 
     public void Sacrifice()
@@ -67,6 +71,12 @@ public class ACard : ALife
     public void OnEndTurn(object[] actionData = null)
     {
         if (StatusList.Contains(Status.BURN)) TakeDamage(1);
+        if (StatusList.Contains(Status.CURSE)) BonusAttack = GetAttack()-1;
+        if (StatusList.Contains(Status.GROWTH))
+        {
+            BonusMaxHealth++;
+            Health++;
+        }
     }
 
     public int GetAttack() => BonusAttack + EntityData.attack;
