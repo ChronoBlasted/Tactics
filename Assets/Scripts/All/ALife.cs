@@ -5,6 +5,9 @@ using UnityEngine;
 public class ALife : ABase
 {
     public int Health;
+    public int MaxHealth;
+    public int BonusMaxHealth;
+
     public EntityData EntityData;
 
     public virtual bool TakeDamage(int amountDamage)

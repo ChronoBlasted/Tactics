@@ -6,7 +6,6 @@ public class ACard : ALife
 {
     public List<Status> StatusList;
     public int BonusAttack;
-    public int BonusMaxHealth;
     public CardRenderer CardRenderer;
 
     public void Init()
