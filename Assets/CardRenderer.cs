@@ -101,7 +101,7 @@ public class CardRenderer : MonoBehaviour,
     {
         if (isInHand && !isDragging && canInteract)
         {
-            MoveUpTween = transform.DOLocalMoveY(200, .2f);
+            MoveUpTween = transform.DOLocalMoveY(310, .2f);
         }
     }
     public void OnPointerExit(PointerEventData eventData)

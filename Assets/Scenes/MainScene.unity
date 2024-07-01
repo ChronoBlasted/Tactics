@@ -1423,7 +1423,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: 0, y: 64}
+  m_AnchoredPosition: {x: 0, y: -64}
   m_SizeDelta: {x: 1280, y: 256}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &779647417
@@ -2672,6 +2672,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Board: {fileID: 339637711}
   isPlayerTurn: 0
+  firstCard: 0
 --- !u!1 &1904215045
 GameObject:
   m_ObjectHideFlags: 0
@@ -3067,7 +3068,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: def44ca6972e2d74ca59e9cc95d343a3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  amountOfCardAtStart: 7
+  amountOfCardAtStart: 4
   amountOfCardPerDeck: 20
   allCard:
   - {fileID: 11400000, guid: acf93c40da4be704fa85c7850ae426bd, type: 2}
