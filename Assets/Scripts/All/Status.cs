@@ -6,6 +6,8 @@ using UnityEngine;
 public enum Status
 {
     NONE,
+    DAYBREAK,
+    NIGHTFALL,
     STUN,
     VIGILANT,
     BURN,

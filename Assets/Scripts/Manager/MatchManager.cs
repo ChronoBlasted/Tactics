@@ -7,6 +7,9 @@ public class MatchManager : MonoSingleton<MatchManager>
 {
     public Board Board;
     public bool isPlayerTurn;
+    public bool firstCard;
+
+    int fire, grass, water;
 
     int roundCount;
 
@@ -38,6 +41,7 @@ public class MatchManager : MonoSingleton<MatchManager>
         Board.UpdateTurn(isPlayerTurn);
         DeckManager.Instance.UpdateTurn(isPlayerTurn);
 
+        firstCard = true;
         roundCount++;
     }
 
@@ -84,6 +88,52 @@ public class MatchManager : MonoSingleton<MatchManager>
 
             card.PlayCard();
         }
+
+        firstCard = false;
+        CheckFamily();
+    }
+
+    public void CheckFamily()
+    {
+        for (int i = 0; i < Board.playerCardBench.Count; i++)
+        {
+            if (Board.playerCardBench[i].EntityData.element == Element.FIRE) fire++;
+            if (Board.playerCardBench[i].EntityData.element == Element.GRASS) grass++;
+            if (Board.playerCardBench[i].EntityData.element == Element.WATER) water++;
+        }
+        AddBoostFamily();
+    }
+
+    public void AddBoostFamily()
+    {
+        if (fire>2)
+        {
+            for (int i = 0; i < Board.opponentCardBench.Count; i++)
+            {
+                AddStatus(Status.BURN,Board.opponentCardBench[i]);
+            }
+
+            
+        }
+        else if (water>2)
+        {
+            for (int i = 0; i < Board.opponentCardBench.Count; i++)
+            {
+                AddStatus(Status.OVERWHELM,Board.playerCardBench[i]);
+            }
+
+           
+        }
+        else if(grass>2)
+        {
+            for (int i = 0; i < Board.opponentCardBench.Count; i++)
+            {
+                AddStatus(Status.GROWTH,Board.playerCardBench[i]);
+            } 
+        }
+        water = 0;
+        grass = 0;
+        fire = 0;
     }
 
     public void DieCard(object[] cardToPlay)

@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Guerino
   m_EditorClassIdentifier: 
   entityName: guerino
-  visual: {fileID: 21300000, guid: a2b88a8025161e845bcd973ce342b878, type: 3}
+  visual: {fileID: 21300000, guid: 152afe8911f720847bc6fede384e538f, type: 3}
   element: 0
   description: 
   attack: 4
