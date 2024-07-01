@@ -12,14 +12,22 @@ public class UIManager : MonoSingleton<UIManager>
     [SerializeField] GameView _gameView;
     [SerializeField] EndView _endView;
 
+    [SerializeField] SacrificePopup _sacrificePopup;
+
+    [SerializeField] Image _blackShade;
+
     View _currentView;
+    Tweener _blackShadeTweener;
+
     public Canvas MainCanvas { get => _mainCanvas; }
+    public SacrificePopup SacrificePopup { get => _sacrificePopup; }
 
     public void Init()
     {
         GameManager.Instance.OnGameStateChanged += HandleStateChange;
 
         InitView();
+        InitPopup();
 
         ChangeView(_gameView);
     }
@@ -29,6 +37,20 @@ public class UIManager : MonoSingleton<UIManager>
         _menuView.Init();
         _gameView.Init();
         _endView.Init();
+    }
+    public void InitPopup()
+    {
+        _sacrificePopup.Init();
+    }
+
+    public void AddPopup(Popup popupToAdd)
+    {
+        popupToAdd.OpenPopup();
+    }
+
+    public void ClosePopup(Popup popupToAdd)
+    {
+        popupToAdd.ClosePopup();
     }
 
     public void ChangeView(View newPanel)
@@ -86,4 +108,23 @@ public class UIManager : MonoSingleton<UIManager>
     }
 
     #endregion
+
+    public void ShowBlackShade()
+    {
+        if (_blackShadeTweener.IsActive()) _blackShadeTweener.Kill();
+
+        _blackShadeTweener = _blackShade.DOFade(.5f, .1f);
+
+        _blackShade.raycastTarget = true;
+    }
+
+    public void HideBlackShade(bool _instant = true)
+    {
+        if (_blackShadeTweener.IsActive()) _blackShadeTweener.Kill();
+
+        if (_instant) _blackShadeTweener = _blackShade.DOFade(0f, 0);
+        else _blackShadeTweener = _blackShade.DOFade(0f, .1f);
+
+        _blackShade.raycastTarget = false;
+    }
 }

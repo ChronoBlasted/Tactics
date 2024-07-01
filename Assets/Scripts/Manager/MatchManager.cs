@@ -3,13 +3,14 @@ using UnityEngine;
 
 public class MatchManager : MonoSingleton<MatchManager>
 {
-    [SerializeField] Board board;
+    public Board Board;
     [SerializeField] bool isPlayerTurn;
 
     int roundCount;
 
     public void Init()
     {
+        GameEventSystem.Instance.AddEvent(EventType.ATTACK, ProcessAttack);
         GameEventSystem.Instance.AddEvent(EventType.PLAYCARD, PlayCard);
         GameEventSystem.Instance.AddEvent(EventType.DIE, DieCard);
 
@@ -32,7 +33,8 @@ public class MatchManager : MonoSingleton<MatchManager>
         GameEventSystem.Instance.Send(EventType.NEWTURN, null);
         GameEventSystem.Instance.Send(EventType.ONSTARTTURN, null);
 
-        board.UpdateTurn(isPlayerTurn);
+        Board.UpdateTurn(isPlayerTurn);
+        DeckManager.Instance.UpdateTurn(isPlayerTurn);
 
         roundCount++;
     }
@@ -47,18 +49,20 @@ public class MatchManager : MonoSingleton<MatchManager>
     public void PlayCard(object[] cardToPlay)
     {
         ACard card = (ACard)cardToPlay[0];
-
+        SacrificePopup popup = UIManager.Instance.SacrificePopup;
         if (card.EntityData.level > 6)
         {
-            //Open sacrifice view
+            popup.UpdateAmount(2);
+            UIManager.Instance.AddPopup(popup);
         }
         else if (card.EntityData.level > 2)
         {
-            //Open sacrifice view
+            popup.UpdateAmount(1);
+            UIManager.Instance.AddPopup(popup);
         }
         else
         {
-            board.SpawnCard(isPlayerTurn, card);
+            Board.SpawnCard(isPlayerTurn, card);
 
             card.PlayCard();
         }
@@ -74,5 +78,13 @@ public class MatchManager : MonoSingleton<MatchManager>
     public void AddStatus(Status statusToAdd, ACard cardToAffect)
     {
         cardToAffect.StatusList.Add(statusToAdd);
+    }
+
+    public void ProcessAttack(object[] cards)
+    {
+        ACard attacker = (ACard)cards[0];
+        ACard defenser = (ACard)cards[1];
+
+        if (attacker.StatusList.Contains(Status.STUN)) AddStatus(Status.STUN, defenser);
     }
 }

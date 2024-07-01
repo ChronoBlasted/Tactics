@@ -5,6 +5,7 @@ using UnityEngine;
 public class CardHolder : MonoBehaviour
 {
     [SerializeField] ACard cardPrefab;
+    public CanvasGroup cg;
 
     public void AddCard(EntityData entityData)
     {

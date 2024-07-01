@@ -6,11 +6,10 @@ public enum Status
 {
     NONE,
     STUN,
+    VIGILANT,
     BURN,
     CURSE,
     GROWTH ,
-    FEARSOME,
-    BRASH,
     REGENERATION,
     ROBUST,
     OVERWHELM

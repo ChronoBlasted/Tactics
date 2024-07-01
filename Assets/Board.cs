@@ -8,12 +8,18 @@ public class Board : MonoBehaviour
     [SerializeField] Transform playerSideBench;
     [SerializeField] Transform opponentSideBench;
 
+    public List<ACard> playerCardBench;
+    public List<ACard> opponentCardBench;
+
     [SerializeField] Image whosTurn;
     [SerializeField] Sprite playerTurnSprite, opponentTurnSprite;
 
     public void SpawnCard(bool isPlayerCard, ACard cardToPlay)
     {
         Transform sideToSpawn = isPlayerCard ? playerSideBench : opponentSideBench;
+
+        if (isPlayerCard) playerCardBench.Add(cardToPlay);
+        else opponentCardBench.Add(cardToPlay);
 
         cardToPlay.transform.SetParent(sideToSpawn);
 

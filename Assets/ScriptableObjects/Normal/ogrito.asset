@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6effd62876aabc049a1754d97adfdd6c, type: 3}
-  m_Name: ogrito
+  m_Name: Ogrito
   m_EditorClassIdentifier: 
   entityName: ogrito
   visual: {fileID: 21300000, guid: ca69a85392f3f024ab92fb8276052f24, type: 3}

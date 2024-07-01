@@ -21,6 +21,7 @@ public class CardRenderer : MonoBehaviour,
     [SerializeField] TMP_Text attackTxt;
     [SerializeField] TMP_Text heatlhTxt;
 
+    public Canvas canvas;
     public event Action OnBeginDragEvent;
     public event Action OnEndDragEvent;
 
@@ -61,7 +62,7 @@ public class CardRenderer : MonoBehaviour,
         {
             isInHand = false;
 
-            var data = new object[] { this };
+            var data = new object[] { card };
 
             GameEventSystem.Instance.Send(EventType.PLAYCARD, data);
         }
