@@ -9,7 +9,8 @@ public enum Status
     VIGILANT,
     BURN,
     CURSE,
-    GROWTH ,
+    GROWTH,
+    VIGILANT,
     REGENERATION,
     ROBUST,
     OVERWHELM
