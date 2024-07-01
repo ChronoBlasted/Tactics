@@ -19,7 +19,7 @@ public class ACard : ALife
     public void Attack(ALife enemyLife)
     {
         if (StatusList.Contains(Status.STUN)) return;
-        TakeDamage(GetAttack()) ;
+        enemyLife.TakeDamage(GetAttack()) ;
         
     }
 
