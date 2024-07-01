@@ -12,6 +12,8 @@ public class CardRenderer : MonoBehaviour,
 {
     EntityData data;
 
+    [SerializeField] ACard card;
+
     [SerializeField] Image background;
     [SerializeField] Image visual;
     [SerializeField] TMP_Text nameTxt;
@@ -39,13 +41,6 @@ public class CardRenderer : MonoBehaviour,
         heatlhTxt.text = data.maxHealth.ToString();
     }
 
-    void PlayCard()
-    {
-        isInHand = false;
-
-        Destroy(gameObject.transform.parent.gameObject);
-    }
-
     #region Drag
 
     public void OnBeginDrag(PointerEventData eventData)
@@ -62,9 +57,11 @@ public class CardRenderer : MonoBehaviour,
     {
         OnEndDragEvent?.Invoke();
 
-        if (transform.position.y > 400)
+        if (transform.position.y > 400 && isInHand)
         {
-            PlayCard();
+            isInHand = false;
+
+            card.PlayCard();
         }
         else
         {

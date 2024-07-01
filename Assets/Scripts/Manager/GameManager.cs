@@ -22,6 +22,11 @@ public class GameManager : MonoSingleton<GameManager>
 
         UIManager.Instance.Init();
 
+        GameEventSystem.Instance.Init();
+
+        MatchManager.Instance.Init();
+
+        DeckManager.Instance.Init();
 
         Time.timeScale = 1.0f;
     }

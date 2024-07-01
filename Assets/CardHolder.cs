@@ -4,15 +4,14 @@ using UnityEngine;
 
 public class CardHolder : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    [SerializeField] ACard cardPrefab;
 
-    // Update is called once per frame
-    void Update()
+    public void AddCard(EntityData entityData)
     {
-        
+        var card = Instantiate(cardPrefab, transform.position, transform.rotation, transform);
+
+        card.EntityData = entityData;
+
+        card.Init();
     }
 }

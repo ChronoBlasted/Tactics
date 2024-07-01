@@ -5,12 +5,11 @@ using UnityEngine;
 public class DeckManager : MonoSingleton<DeckManager>
 {
     [SerializeField] int amountOfCardAtStart = 7;
-    [SerializeField] Queue<GameObject> playerDeck = new Queue<GameObject>();
-    [SerializeField] Queue<GameObject> opponentDeck = new Queue<GameObject>();
+    [SerializeField] List<EntityData> playerDeck = new List<EntityData>();
+    [SerializeField] List<EntityData> opponentDeck = new List<EntityData>();
 
-
-    [SerializeField] List<GameObject> playerHand = new List<GameObject>();
-    [SerializeField] List<GameObject> opponentHand = new List<GameObject>();
+    [SerializeField] CardHolder playerCardHolder;
+    [SerializeField] CardHolder opponentCardHolder;
 
     public void Init()
     {
@@ -21,17 +20,17 @@ public class DeckManager : MonoSingleton<DeckManager>
     {
         for (int i = 0; i < amountOfCardAtStart; i++)
         {
-            playerHand.Add(DrawCard(playerDeck));
+            playerCardHolder.AddCard(DrawCard(playerDeck));
         }
 
         for (int i = 0; i < amountOfCardAtStart; i++)
         {
-            opponentHand.Add(DrawCard(opponentDeck));
+            opponentCardHolder.AddCard(DrawCard(playerDeck));
         }
     }
 
-    public GameObject DrawCard(Queue<GameObject> deckToDraw)
+    public EntityData DrawCard(List<EntityData> deckToDraw)
     {
-        return deckToDraw.Dequeue();
+        return deckToDraw[deckToDraw.Count - 1];
     }
 }

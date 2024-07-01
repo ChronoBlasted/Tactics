@@ -3,12 +3,16 @@ using UnityEngine;
 
 public class MatchManager : MonoSingleton<MatchManager>
 {
-    public bool isPlayerTurn;
+    [SerializeField] Board board;
+    [SerializeField] bool isPlayerTurn;
+
+    int roundCount;
 
     public void Init()
     {
-        ChooseWhosFirst();
+        GameEventSystem.Instance.AddEvent(EventType.PLAYCARD, PlayCard);
 
+        ChooseWhosFirst();
         UpdateTurn();
     }
 
@@ -23,30 +27,42 @@ public class MatchManager : MonoSingleton<MatchManager>
 
     void UpdateTurn()
     {
-        if (isPlayerTurn)
-        {
+        if (roundCount != 0) GameEventSystem.Instance.Send(EventType.ONENDTURN, null);
+        GameEventSystem.Instance.Send(EventType.NEWTURN, null);
+        GameEventSystem.Instance.Send(EventType.ONSTARTTURN, null);
 
-        }
-        else
-        {
+        board.UpdateTurn(isPlayerTurn);
 
-        }
+        roundCount++;
     }
 
-    public void NextTurn()
+    public void HandleNextTurn()
     {
         isPlayerTurn = !isPlayerTurn;
 
-        GameEventSystem.Instance.feed[gameObject]?.Invoke();
+        UpdateTurn();
     }
 
-    public void PlayCard(GameObject cardToPlay)
+    public void PlayCard(object[] cardToPlay)
     {
+        ACard card = (ACard)cardToPlay[0];
 
+        if (card.EntityData.level > 6)
+        {
+            //Open sacrifice view
+        }
+        else if (card.EntityData.level > 2)
+        {
+            //Open sacrifice view
+        }
+        else
+        {
+            board.SpawnCard(isPlayerTurn, card);
+        }
     }
 
-    public void AddStatus(GameObject statusToAdd, GameObject cardToPlay)
+    public void AddStatus(Status statusToAdd, ACard cardToAffect)
     {
-
+        cardToAffect.StatusList.Add(statusToAdd);
     }
 }

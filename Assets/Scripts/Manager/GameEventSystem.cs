@@ -5,16 +5,26 @@ using UnityEngine;
 
 public class GameEventSystem : MonoSingleton<GameEventSystem>
 {
-    public Dictionary<GameObject, Action> feed;
+    Dictionary<EventType, Action<object[]>> feed = new Dictionary<EventType, Action<object[]>>();
 
-    public void AddEvent(GameObject eventType, Action actionData)
+    public void Init()
     {
-        feed[eventType] += actionData;
 
-        feed[eventType]?.Invoke();
     }
 
-    public void RemoveEvent(GameObject eventType, Action actionData)
+    public void AddEvent(EventType eventType, Action<object[]> actionData)
+    {
+        if (feed.ContainsKey(eventType))
+        {
+            feed[eventType] += actionData;
+        }
+        else
+        {
+            feed.Add(eventType, actionData);
+        }
+    }
+
+    public void RemoveEvent(EventType eventType, Action<object[]> actionData)
     {
         if (feed.ContainsKey(eventType))
         {
@@ -23,6 +33,14 @@ public class GameEventSystem : MonoSingleton<GameEventSystem>
         else
         {
             Debug.Log("Feed ne possède pas cette event type");
+        }
+    }
+
+    public void Send(EventType eventType, object[] actionData)
+    {
+        if (feed.ContainsKey(eventType))
+        {
+            feed[eventType]?.Invoke(actionData);
         }
     }
 }
