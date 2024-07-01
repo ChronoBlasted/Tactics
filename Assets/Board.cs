@@ -17,14 +17,22 @@ public class Board : MonoBehaviour
     public void SpawnCard(bool isPlayerCard, ACard cardToPlay)
     {
         Transform sideToSpawn = isPlayerCard ? playerSideBench : opponentSideBench;
+        List<ACard> cardBench = isPlayerCard ? playerCardBench : opponentCardBench;
 
-        if (isPlayerCard) playerCardBench.Add(cardToPlay);
-        else opponentCardBench.Add(cardToPlay);
+        cardBench.Add(cardToPlay);
 
-        cardToPlay.transform.SetParent(sideToSpawn);
-
-        cardToPlay.transform.localPosition = Vector3.zero;
-        cardToPlay.CardRenderer.transform.localPosition = Vector3.zero;
+        // Trouver le premier slot libre
+        for (int i = 0; i < sideToSpawn.childCount; i++)
+        {
+            Transform slot = sideToSpawn.GetChild(i);
+            if (slot.childCount == 0)
+            {
+                cardToPlay.transform.SetParent(slot);
+                cardToPlay.transform.localPosition = Vector3.zero;
+                cardToPlay.CardRenderer.transform.localPosition = Vector3.zero;
+                break;
+            }
+        }
     }
 
     public void UpdateTurn(bool isPlayerTurn)
