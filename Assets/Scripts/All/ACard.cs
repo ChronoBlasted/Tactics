@@ -19,8 +19,7 @@ public class ACard : ALife
     public void Attack(ALife enemyLife)
     {
         if (StatusList.Contains(Status.STUN)) return;
-        TakeDamage(GetAttack()) ;
-        
+        TakeDamage(GetAttack());
     }
 
     public void PlayCard()
@@ -65,13 +64,13 @@ public class ACard : ALife
 
     public void Sacrifice()
     {
-
+        Destroy(gameObject);
     }
 
     public void OnEndTurn(object[] actionData = null)
     {
         if (StatusList.Contains(Status.BURN)) TakeDamage(1);
-        if (StatusList.Contains(Status.CURSE)) BonusAttack = GetAttack()-1;
+        if (StatusList.Contains(Status.CURSE)) BonusAttack = GetAttack() - 1;
         if (StatusList.Contains(Status.GROWTH))
         {
             BonusMaxHealth++;

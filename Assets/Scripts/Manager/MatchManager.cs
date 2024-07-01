@@ -6,7 +6,7 @@ using UnityEngine;
 public class MatchManager : MonoSingleton<MatchManager>
 {
     public Board Board;
-    [SerializeField] bool isPlayerTurn;
+    public bool isPlayerTurn;
 
     int roundCount;
 
@@ -54,13 +54,29 @@ public class MatchManager : MonoSingleton<MatchManager>
         SacrificePopup popup = UIManager.Instance.SacrificePopup;
         if (card.EntityData.level > 6)
         {
-            popup.UpdateAmount(2);
-            UIManager.Instance.AddPopup(popup);
+            if (Board.playerCardBench.Count < 2)
+            {
+                card.CardRenderer.ResetCardInHand();
+                UIManager.Instance.DoFloatingText("You need atleast 2 card to play this card", Color.red);
+            }
+            else
+            {
+                popup.UpdateData(2, card);
+                UIManager.Instance.AddPopup(popup);
+            }
         }
         else if (card.EntityData.level > 2)
         {
-            popup.UpdateAmount(1);
-            UIManager.Instance.AddPopup(popup);
+            if (Board.playerCardBench.Count < 1)
+            {
+                card.CardRenderer.ResetCardInHand();
+                UIManager.Instance.DoFloatingText("You need atleast 1 card to play this card", Color.red);
+            }
+            else
+            {
+                popup.UpdateData(1, card);
+                UIManager.Instance.AddPopup(popup);
+            }
         }
         else
         {
@@ -82,11 +98,11 @@ public class MatchManager : MonoSingleton<MatchManager>
         cardToAffect.StatusList.Add(statusToAdd);
     }
 
-    public void RemoveStatus( ACard cardToEffect , Status statusToRemove)
+    public void RemoveStatus(ACard cardToEffect, Status statusToRemove)
     {
         cardToEffect.StatusList.Remove(statusToRemove);
     }
-    
+
     public void ProcessAttack(object[] data)
     {
         ACard attacker = (ACard)data[0];
@@ -100,9 +116,9 @@ public class MatchManager : MonoSingleton<MatchManager>
         }
         if (attacker.StatusList.Contains(Status.OVERWHELM))
         {
-            if (attacker.GetAttack()>defenser.Health)
+            if (attacker.GetAttack() > defenser.Health)
             {
-                playerDefend.TakeDamage(attacker.GetAttack() - defenser.Health) ;
+                playerDefend.TakeDamage(attacker.GetAttack() - defenser.Health);
             }
         }
         if (!attacker.StatusList.Contains(Status.STUN)) attacker.Attack(defenser);

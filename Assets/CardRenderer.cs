@@ -20,16 +20,21 @@ public class CardRenderer : MonoBehaviour,
     [SerializeField] TMP_Text descTxt;
     [SerializeField] TMP_Text attackTxt;
     [SerializeField] TMP_Text heatlhTxt;
+    [SerializeField] TMP_Text levelTxt;
+    [SerializeField] Image raycastPadding;
 
     public Canvas canvas;
     public GraphicRaycaster gr;
     public event Action OnBeginDragEvent;
     public event Action OnEndDragEvent;
 
-    bool isSelected;
-    bool isInHand = true;
+    bool isDragging;
+    bool isSacrificeMode;
+    public bool isSelected;
+    public bool canInteract = true;
+    public bool isInHand = true;
 
-    Tween HoverTween;
+    Tween MoveUpTween;
 
     public void Init(EntityData newData)
     {
@@ -38,6 +43,7 @@ public class CardRenderer : MonoBehaviour,
         visual.sprite = data.visual;
 
         nameTxt.text = data.name;
+        levelTxt.text = data.level.ToString();
         descTxt.text = data.description;
         attackTxt.text = data.attack.ToString();
         heatlhTxt.text = data.maxHealth.ToString();
@@ -47,29 +53,43 @@ public class CardRenderer : MonoBehaviour,
 
     public void OnBeginDrag(PointerEventData eventData)
     {
-        OnBeginDragEvent?.Invoke();
+        if (isInHand)
+        {
+            isDragging = true;
+
+            OnBeginDragEvent?.Invoke();
+        }
     }
 
     public void OnDrag(PointerEventData eventData)
     {
-        transform.position = eventData.position;
+        if (isInHand)
+        {
+            transform.position = eventData.position;
+        }
     }
 
     public void OnEndDrag(PointerEventData eventData)
     {
-        OnEndDragEvent?.Invoke();
-
-        if (transform.position.y > 400 && isInHand)
+        if (isInHand)
         {
-            isInHand = false;
+            if (transform.position.y > 400)
+            {
+                isInHand = false;
+                raycastPadding.enabled = false;
 
-            var data = new object[] { card };
+                var data = new object[] { card };
 
-            GameEventSystem.Instance.Send(EventType.PLAYCARD, data);
-        }
-        else
-        {
-            transform.localPosition = Vector3.zero;
+                GameEventSystem.Instance.Send(EventType.PLAYCARD, data);
+            }
+            else
+            {
+                transform.localPosition = Vector3.zero;
+            }
+
+            OnEndDragEvent?.Invoke();
+
+            isDragging = false;
         }
     }
 
@@ -79,31 +99,72 @@ public class CardRenderer : MonoBehaviour,
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        if (isInHand)
+        if (isInHand && !isDragging && canInteract)
         {
-            HoverTween = transform.DOLocalMoveY(200, .2f);
+            MoveUpTween = transform.DOLocalMoveY(200, .2f);
         }
     }
     public void OnPointerExit(PointerEventData eventData)
     {
-        if (isInHand)
+        if (isInHand && !isDragging && canInteract)
         {
-            HoverTween = transform.DOLocalMoveY(0, .2f);
+            MoveUpTween = transform.DOLocalMoveY(0, .2f);
         }
     }
 
     public void OnPointerDown(PointerEventData eventData)
     {
-        HoverTween.Kill();
+        MoveUpTween.Kill();
 
-        isSelected = true;
+        if (isSacrificeMode)
+        {
+            isSelected = !isSelected;
 
+            ToggleSelected(isSelected);
+        }
     }
     public void OnPointerUp(PointerEventData eventData)
     {
-        HoverTween.Kill();
+        MoveUpTween.Kill();
+    }
+
+    #endregion
+
+    public void ResetCardInHand()
+    {
+        isInHand = true;
+        raycastPadding.enabled = true;
+        transform.localPosition = Vector3.zero;
+    }
+
+    public void SetOnSacrificeMode()
+    {
+        isSacrificeMode = true;
+        canvas.sortingOrder = 10;
+
+        MoveUpTween = transform.DOLocalMoveY(256, .2f);
+    }
+
+    public void SetOffSacrificeMode()
+    {
+        isSacrificeMode = false;
+        canvas.sortingOrder = 1;
 
         isSelected = false;
+        ToggleSelected(isSelected);
+
+        MoveUpTween = transform.DOLocalMoveY(0, .2f);
     }
-    #endregion
+
+    public void ToggleSelected(bool setSelect)
+    {
+        if (setSelect)
+        {
+            background.color = Color.yellow;
+        }
+        else
+        {
+            background.color = Color.white;
+        }
+    }
 }

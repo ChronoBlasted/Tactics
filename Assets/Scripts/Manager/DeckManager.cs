@@ -12,8 +12,8 @@ public class DeckManager : MonoSingleton<DeckManager>
     [SerializeField] List<EntityData> playerDeck = new List<EntityData>();
     [SerializeField] List<EntityData> opponentDeck = new List<EntityData>();
 
-    [SerializeField] CardHolder playerCardHolder;
-    [SerializeField] CardHolder opponentCardHolder;
+    public CardHolder playerCardHolder;
+    public CardHolder opponentCardHolder;
 
     EntityData tempCardData;
 

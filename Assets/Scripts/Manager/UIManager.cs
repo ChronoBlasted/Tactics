@@ -14,6 +14,9 @@ public class UIManager : MonoSingleton<UIManager>
 
     [SerializeField] SacrificePopup _sacrificePopup;
 
+    [SerializeField] FloatingText _floatingText;
+    [SerializeField] Transform _floatingTextSpawnTransform;
+
     [SerializeField] Image _blackShade;
 
     View _currentView;
@@ -113,7 +116,7 @@ public class UIManager : MonoSingleton<UIManager>
     {
         if (_blackShadeTweener.IsActive()) _blackShadeTweener.Kill();
 
-        _blackShadeTweener = _blackShade.DOFade(.5f, .1f);
+        _blackShadeTweener = _blackShade.DOFade(.8f, .1f);
 
         _blackShade.raycastTarget = true;
     }
@@ -126,5 +129,12 @@ public class UIManager : MonoSingleton<UIManager>
         else _blackShadeTweener = _blackShade.DOFade(0f, .1f);
 
         _blackShade.raycastTarget = false;
+    }
+
+    public void DoFloatingText(string text, Color color)
+    {
+        FloatingText textGO = Instantiate(_floatingText, _floatingTextSpawnTransform);
+
+        textGO.Init(text, color);
     }
 }
