@@ -84,7 +84,7 @@ public class MatchManager : MonoSingleton<MatchManager>
         }
         else
         {
-            Board.SpawnCard(isPlayerTurn, card);
+            StartCoroutine(Board.SpawnCard(isPlayerTurn, card));
 
             card.PlayCard();
         }

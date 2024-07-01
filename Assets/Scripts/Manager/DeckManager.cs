@@ -1,5 +1,6 @@
 using BaseTemplate.Behaviours;
 using DG.Tweening;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -32,7 +33,7 @@ public class DeckManager : MonoSingleton<DeckManager>
         }
     }
 
-    public void SetupHands()
+    void SetupHands()
     {
         for (int i = 0; i < amountOfCardAtStart; i++)
         {
@@ -40,6 +41,7 @@ public class DeckManager : MonoSingleton<DeckManager>
             DrawCard(false);
         }
     }
+
 
     public void DrawCard(bool isPlayerTurn)
     {

@@ -4,6 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using static UnityEngine.RuleTile.TilingRuleOutput;
 
 public class CardRenderer : MonoBehaviour,
     IDragHandler, IBeginDragHandler, IEndDragHandler,
@@ -82,6 +83,9 @@ public class CardRenderer : MonoBehaviour,
                 var data = new object[] { card };
 
                 GameEventSystem.Instance.Send(EventType.PLAYCARD, data);
+
+                canvas.sortingOrder = 1;
+                transform.DOScale(Vector3.one, .05f);
             }
             else
             {
@@ -106,7 +110,9 @@ public class CardRenderer : MonoBehaviour,
 
             MoveUpTween = transform.DOLocalMoveY(310, .2f);
 
-            canvas.sortingOrder = 4;
+            transform.DOScale(new Vector3(1.2f, 1.2f, 1.2f), .05f).SetEase(Ease.OutSine);
+
+            canvas.sortingOrder = 3;
         }
     }
     public void OnPointerExit(PointerEventData eventData)
@@ -115,9 +121,11 @@ public class CardRenderer : MonoBehaviour,
         {
             MoveUpTween.Kill();
 
+            transform.DOScale(Vector3.one, .05f);
+
             MoveUpTween = transform.DOLocalMoveY(0, .2f).OnComplete(() =>
             {
-                canvas.sortingOrder = 3;
+                canvas.sortingOrder = 2;
             });
         }
     }
@@ -135,7 +143,6 @@ public class CardRenderer : MonoBehaviour,
     }
     public void OnPointerUp(PointerEventData eventData)
     {
-        MoveUpTween.Kill();
     }
 
     #endregion
@@ -145,6 +152,9 @@ public class CardRenderer : MonoBehaviour,
         isInHand = true;
         raycastPadding.enabled = true;
         transform.localPosition = Vector3.zero;
+
+        canvas.sortingOrder = 2;
+        transform.DOScale(Vector3.one, .05f);
     }
 
     public void SetOnSacrificeMode()
@@ -159,7 +169,7 @@ public class CardRenderer : MonoBehaviour,
     public void SetOffSacrificeMode()
     {
         isSacrificeMode = false;
-        canvas.sortingOrder = 3;
+        canvas.sortingOrder = 1;
 
         isSelected = false;
         ToggleSelected(isSelected);
@@ -175,8 +185,7 @@ public class CardRenderer : MonoBehaviour,
             background.color = Color.grey;
 
             MoveUpTween.Kill();
-            MoveUpTween = transform.DOLocalMoveY(342, .2f);
-
+            MoveUpTween = transform.DOLocalMoveY(376, .2f);
         }
         else
         {

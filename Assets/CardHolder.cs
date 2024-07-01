@@ -1,3 +1,4 @@
+using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -8,6 +9,7 @@ public class CardHolder : MonoBehaviour
 
     public List<ACard> cards;
     public CanvasGroup cg;
+    public Transform spawnTransform;
 
     public void AddCard(EntityData entityData)
     {
@@ -16,6 +18,9 @@ public class CardHolder : MonoBehaviour
         card.EntityData = entityData;
 
         card.Init();
+
+        card.CardRenderer.transform.position = spawnTransform.position;
+        card.CardRenderer.transform.DOLocalMove(Vector3.zero, .5f).SetEase(Ease.OutSine);
 
         cards.Add(card);
     }

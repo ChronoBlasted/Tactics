@@ -79,18 +79,17 @@ public class SacrificePopup : Popup
 
         if (countSelected >= _amountOfSacrifice)
         {
+            StartCoroutine(MatchManager.Instance.Board.SpawnCard(MatchManager.Instance.isPlayerTurn, cardToPlay));
+
             ClosePopup();
 
-            MatchManager.Instance.Board.SpawnCard(MatchManager.Instance.isPlayerTurn, cardToPlay);
-
             cardToPlay.PlayCard();
-
-            cardToPlay.CardRenderer.canvas.sortingOrder = 3;
 
             foreach (ACard card in sacrificeCards)
             {
                 card.Sacrifice();
             }
+
         }
         else
         {
