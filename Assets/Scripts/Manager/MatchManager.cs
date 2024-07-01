@@ -8,6 +8,7 @@ public class MatchManager : MonoSingleton<MatchManager>
     public Board Board;
     [SerializeField] bool isPlayerTurn;
     private int fire, grass, water;
+    public bool firstCard = true;
 
     int roundCount;
 
@@ -39,6 +40,7 @@ public class MatchManager : MonoSingleton<MatchManager>
         Board.UpdateTurn(isPlayerTurn);
         DeckManager.Instance.UpdateTurn(isPlayerTurn);
 
+        firstCard = true;
         roundCount++;
     }
 
@@ -70,6 +72,7 @@ public class MatchManager : MonoSingleton<MatchManager>
             card.PlayCard();
         }
 
+        firstCard = false;
         CheckFamily();
     }
 

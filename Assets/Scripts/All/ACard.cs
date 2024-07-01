@@ -25,6 +25,21 @@ public class ACard : ALife
 
     public void PlayCard()
     {
+        if (MatchManager.Instance.firstCard)
+        {
+            if (StatusList.Contains(Status.DAYBREAK))
+            {
+                AddAttack(2);
+            }
+        }
+
+        if (!MatchManager.Instance.firstCard)
+        {
+            if (StatusList.Contains(Status.NIGHTFALL))
+            {
+                AddHealth(1);
+            }
+        }
         Debug.Log("Card play");
     }
 
@@ -48,14 +63,20 @@ public class ACard : ALife
         Debug.Log("Die");
     }
 
-    public void AddHealth()
+    public void AddHealth(int healthAdd)
     {
-
+        BonusMaxHealth+= healthAdd;
+        Health+= healthAdd;
     }
 
-    public void AddAttack()
+    public void AddAttack(int attackAdd)
     {
+        BonusAttack += attackAdd;
 
+        if (BonusAttack<0 )
+        {
+            BonusAttack = 0;
+        }
     }
 
     public void OnStartTurn(object[] actionData = null)
@@ -71,12 +92,8 @@ public class ACard : ALife
     public void OnEndTurn(object[] actionData = null)
     {
         if (StatusList.Contains(Status.BURN)) TakeDamage(1);
-        if (StatusList.Contains(Status.CURSE)) BonusAttack = GetAttack()-1;
-        if (StatusList.Contains(Status.GROWTH))
-        {
-            BonusMaxHealth++;
-            Health++;
-        }
+        if (StatusList.Contains(Status.CURSE)) AddAttack(-1);
+        if (StatusList.Contains(Status.GROWTH)) AddHealth(1);
     }
 
     public int GetAttack() => BonusAttack + EntityData.attack;
