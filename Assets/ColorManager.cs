@@ -1,18 +1,33 @@
+using BaseTemplate.Behaviours;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ColorManager : MonoBehaviour
+public class ColorManager : MonoSingleton<ColorManager>
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    public Color red;
+    public Color green;
+    public Color blue;
 
-    // Update is called once per frame
-    void Update()
+    [SerializeField] Sprite normalBG;
+    [SerializeField] Sprite fireBG;
+    [SerializeField] Sprite waterBG;
+    [SerializeField] Sprite grassBG;
+
+    public Sprite GetBackgroundByElement(Element element)
     {
-        
+        switch (element)
+        {
+            case Element.NORMAL:
+                return normalBG;
+            case Element.FIRE:
+                return fireBG;
+            case Element.WATER:
+                return waterBG;
+            case Element.GRASS:
+                return grassBG;
+        }
+
+        return normalBG;
     }
 }

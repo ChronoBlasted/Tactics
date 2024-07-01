@@ -510,6 +510,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6475ed03b230c5446b0128335cfa8e10, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  red: {r: 0.90196085, g: 0.13333334, b: 0.14117648, a: 1}
+  green: {r: 0.2392157, g: 0.63529414, b: 0.14117648, a: 1}
+  blue: {r: 0.13725491, g: 0.48627454, b: 0.8941177, a: 1}
+  normalBG: {fileID: 21300000, guid: 788498dc5c8fc6d48a4c4d21ac941955, type: 3}
+  fireBG: {fileID: 21300000, guid: 90f757fe0dd2a534786276cd0c29d908, type: 3}
+  waterBG: {fileID: 21300000, guid: f733b378aba7ff940bb0cac92f52b06a, type: 3}
+  grassBG: {fileID: 21300000, guid: cc4523a108dc5564e8663f65ed3e3bda, type: 3}
 --- !u!1 &395051403
 GameObject:
   m_ObjectHideFlags: 0
@@ -1568,7 +1575,7 @@ Canvas:
   m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
-  m_SortingOrder: 5
+  m_SortingOrder: 7
   m_TargetDisplay: 0
 --- !u!114 &872619126
 MonoBehaviour:
@@ -1918,7 +1925,7 @@ Canvas:
   m_AdditionalShaderChannelsFlag: 0
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
-  m_SortingOrder: 2
+  m_SortingOrder: 5
   m_TargetDisplay: 0
 --- !u!1 &1222745953
 GameObject:
@@ -3011,7 +3018,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 872619124}
         m_TargetAssemblyTypeName: SacrificePopup, Assembly-CSharp
-        m_MethodName: ClosePopup
+        m_MethodName: HandleReturn
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

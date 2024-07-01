@@ -34,7 +34,7 @@ public class CardRenderer : MonoBehaviour,
     public bool canInteract = true;
     public bool isInHand = true;
 
-    Tween MoveUpTween;
+    public Tween MoveUpTween;
 
     public void Init(EntityData newData)
     {
@@ -42,6 +42,7 @@ public class CardRenderer : MonoBehaviour,
 
         visual.sprite = data.visual;
 
+        background.sprite = ColorManager.Instance.GetBackgroundByElement(data.element);
         nameTxt.text = data.name;
         levelTxt.text = data.level.ToString();
         descTxt.text = data.description;
@@ -101,14 +102,23 @@ public class CardRenderer : MonoBehaviour,
     {
         if (isInHand && !isDragging && canInteract)
         {
+            MoveUpTween.Kill();
+
             MoveUpTween = transform.DOLocalMoveY(310, .2f);
+
+            canvas.sortingOrder = 4;
         }
     }
     public void OnPointerExit(PointerEventData eventData)
     {
         if (isInHand && !isDragging && canInteract)
         {
-            MoveUpTween = transform.DOLocalMoveY(0, .2f);
+            MoveUpTween.Kill();
+
+            MoveUpTween = transform.DOLocalMoveY(0, .2f).OnComplete(() =>
+            {
+                canvas.sortingOrder = 3;
+            });
         }
     }
 
@@ -142,17 +152,19 @@ public class CardRenderer : MonoBehaviour,
         isSacrificeMode = true;
         canvas.sortingOrder = 10;
 
+        MoveUpTween.Kill();
         MoveUpTween = transform.DOLocalMoveY(256, .2f);
     }
 
     public void SetOffSacrificeMode()
     {
         isSacrificeMode = false;
-        canvas.sortingOrder = 1;
+        canvas.sortingOrder = 3;
 
         isSelected = false;
         ToggleSelected(isSelected);
 
+        MoveUpTween.Kill();
         MoveUpTween = transform.DOLocalMoveY(0, .2f);
     }
 
@@ -160,11 +172,18 @@ public class CardRenderer : MonoBehaviour,
     {
         if (setSelect)
         {
-            background.color = Color.yellow;
+            background.color = Color.grey;
+
+            MoveUpTween.Kill();
+            MoveUpTween = transform.DOLocalMoveY(342, .2f);
+
         }
         else
         {
             background.color = Color.white;
+
+            MoveUpTween.Kill();
+            MoveUpTween = transform.DOLocalMoveY(256, .2f);
         }
     }
 }

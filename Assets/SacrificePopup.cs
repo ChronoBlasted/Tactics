@@ -85,6 +85,8 @@ public class SacrificePopup : Popup
 
             cardToPlay.PlayCard();
 
+            cardToPlay.CardRenderer.canvas.sortingOrder = 3;
+
             foreach (ACard card in sacrificeCards)
             {
                 card.Sacrifice();
@@ -94,5 +96,12 @@ public class SacrificePopup : Popup
         {
             UIManager.Instance.DoFloatingText("You need to select " + _amountOfSacrifice + " card(s) to play this card", Color.red);
         }
+    }
+
+    public void HandleReturn()
+    {
+        cardToPlay.CardRenderer.ResetCardInHand();
+
+        ClosePopup();
     }
 }

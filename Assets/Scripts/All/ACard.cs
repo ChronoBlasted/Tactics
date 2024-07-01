@@ -1,3 +1,4 @@
+using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -19,8 +20,8 @@ public class ACard : ALife
     public void Attack(ALife enemyLife)
     {
         if (StatusList.Contains(Status.STUN)) return;
-        enemyLife.TakeDamage(GetAttack()) ;
-        
+        enemyLife.TakeDamage(GetAttack());
+
     }
 
     public void PlayCard()
@@ -40,7 +41,9 @@ public class ACard : ALife
                 AddHealth(1);
             }
         }
-        Debug.Log("Card play");
+
+        if (DeckManager.Instance.playerCardHolder.cards.Contains(this)) DeckManager.Instance.playerCardHolder.cards.Remove(this);
+        if (DeckManager.Instance.opponentCardHolder.cards.Contains(this)) DeckManager.Instance.opponentCardHolder.cards.Remove(this);
     }
 
     public override bool TakeDamage(int amountDamage)
@@ -60,20 +63,21 @@ public class ACard : ALife
 
     public void Die()
     {
+
         Debug.Log("Die");
     }
 
     public void AddHealth(int healthAdd)
     {
-        BonusMaxHealth+= healthAdd;
-        Health+= healthAdd;
+        BonusMaxHealth += healthAdd;
+        Health += healthAdd;
     }
 
     public void AddAttack(int attackAdd)
     {
         BonusAttack += attackAdd;
 
-        if (BonusAttack<0 )
+        if (BonusAttack < 0)
         {
             BonusAttack = 0;
         }
@@ -86,6 +90,13 @@ public class ACard : ALife
 
     public void Sacrifice()
     {
+        //Sacrifice
+
+        if (MatchManager.Instance.Board.playerCardBench.Contains(this)) MatchManager.Instance.Board.playerCardBench.Remove(this);
+        if (MatchManager.Instance.Board.opponentCardBench.Contains(this)) MatchManager.Instance.Board.opponentCardBench.Remove(this);
+
+        CardRenderer.MoveUpTween.Kill();
+
         Destroy(gameObject);
     }
 

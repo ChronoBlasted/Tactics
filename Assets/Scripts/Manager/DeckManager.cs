@@ -36,19 +36,23 @@ public class DeckManager : MonoSingleton<DeckManager>
     {
         for (int i = 0; i < amountOfCardAtStart; i++)
         {
+            DrawCard(true);
+            DrawCard(false);
+        }
+    }
+
+    public void DrawCard(bool isPlayerTurn)
+    {
+        if (playerDeck.Count > 0 && isPlayerTurn)
+        {
             tempCardData = GetRandomCard(playerDeck);
-
             playerCardHolder.AddCard(tempCardData);
-
             playerDeck.Remove(tempCardData);
         }
-
-        for (int i = 0; i < amountOfCardAtStart; i++)
+        if (opponentDeck.Count > 0 && !isPlayerTurn)
         {
             tempCardData = GetRandomCard(opponentDeck);
-
             opponentCardHolder.AddCard(tempCardData);
-
             opponentDeck.Remove(tempCardData);
         }
     }
@@ -67,9 +71,11 @@ public class DeckManager : MonoSingleton<DeckManager>
 
     public void UpdateTurn(bool isPlayerTurn)
     {
+        DrawCard(isPlayerTurn);
+
         if (isPlayerTurn)
         {
-            playerCardHolder.cg.DOFade(1f, .2f);
+            playerCardHolder.cg.DOFade(1f, .1f);
 
             foreach (var card in playerCardHolder.cards)
             {
@@ -78,7 +84,7 @@ public class DeckManager : MonoSingleton<DeckManager>
         }
         else
         {
-            playerCardHolder.cg.DOFade(.5f, .2f);
+            playerCardHolder.cg.DOFade(.5f, .1f);
 
             foreach (var card in playerCardHolder.cards)
             {
