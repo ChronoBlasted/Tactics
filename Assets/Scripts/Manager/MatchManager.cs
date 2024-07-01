@@ -11,6 +11,7 @@ public class MatchManager : MonoSingleton<MatchManager>
     public void Init()
     {
         GameEventSystem.Instance.AddEvent(EventType.PLAYCARD, PlayCard);
+        GameEventSystem.Instance.AddEvent(EventType.DIE, DieCard);
 
         ChooseWhosFirst();
         UpdateTurn();
@@ -61,6 +62,13 @@ public class MatchManager : MonoSingleton<MatchManager>
 
             card.PlayCard();
         }
+    }
+
+    public void DieCard(object[] cardToPlay)
+    {
+        ACard card = (ACard)cardToPlay[0];
+
+        card.Die();
     }
 
     public void AddStatus(Status statusToAdd, ACard cardToAffect)

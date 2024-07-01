@@ -21,12 +21,26 @@ public class ACard : ALife
 
     public void PlayCard()
     {
-
+        Debug.Log("Card play");
     }
 
-    public void PlaceOnAttack()
+    public override bool TakeDamage(int amountDamage)
     {
+        return base.TakeDamage(amountDamage);
+    }
 
+    public override void HealthDie()
+    {
+        base.HealthDie();
+
+        var data = new object[] { this };
+
+        GameEventSystem.Instance.Send(EventType.DIE, data);
+    }
+
+    public void Die()
+    {
+        Debug.Log("Die");
     }
 
     public void AddHealth()
