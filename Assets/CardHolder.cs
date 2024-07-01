@@ -5,6 +5,8 @@ using UnityEngine;
 public class CardHolder : MonoBehaviour
 {
     [SerializeField] ACard cardPrefab;
+
+    public List<ACard> cards;
     public CanvasGroup cg;
 
     public void AddCard(EntityData entityData)
@@ -14,5 +16,7 @@ public class CardHolder : MonoBehaviour
         card.EntityData = entityData;
 
         card.Init();
+
+        cards.Add(card);
     }
 }

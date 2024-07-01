@@ -24,9 +24,9 @@ public class GameManager : MonoSingleton<GameManager>
 
         GameEventSystem.Instance.Init();
 
-        MatchManager.Instance.Init();
-
         DeckManager.Instance.Init();
+
+        MatchManager.Instance.Init();
 
         Time.timeScale = 1.0f;
     }

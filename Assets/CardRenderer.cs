@@ -22,6 +22,7 @@ public class CardRenderer : MonoBehaviour,
     [SerializeField] TMP_Text heatlhTxt;
 
     public Canvas canvas;
+    public GraphicRaycaster gr;
     public event Action OnBeginDragEvent;
     public event Action OnEndDragEvent;
 

@@ -765,6 +765,7 @@ MonoBehaviour:
   attackTxt: {fileID: 5760293308322021470}
   heatlhTxt: {fileID: 4649077516139661290}
   canvas: {fileID: 3477261186206363019}
+  gr: {fileID: 8880094269432804001}
 --- !u!1 &5647777774789383975
 GameObject:
   m_ObjectHideFlags: 0

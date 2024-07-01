@@ -1,4 +1,5 @@
 using BaseTemplate.Behaviours;
+using DG.Tweening;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -68,12 +69,21 @@ public class DeckManager : MonoSingleton<DeckManager>
     {
         if (isPlayerTurn)
         {
-            playerCardHolder.cg.alpha = 1f;
+            playerCardHolder.cg.DOFade(1f, .2f);
+
+            foreach (var card in playerCardHolder.cards)
+            {
+                card.CardRenderer.gr.enabled = true;
+            }
         }
         else
         {
-            playerCardHolder.cg.alpha = .5f;
+            playerCardHolder.cg.DOFade(.5f, .2f);
 
+            foreach (var card in playerCardHolder.cards)
+            {
+                card.CardRenderer.gr.enabled = false;
+            }
         }
     }
 }
