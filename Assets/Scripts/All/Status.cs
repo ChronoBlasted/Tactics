@@ -1,5 +1,6 @@
 using System.Collections;
-using System.Collections.Generic;using UnityEditor;
+using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
 public enum Status
@@ -10,7 +11,6 @@ public enum Status
     BURN,
     CURSE,
     GROWTH,
-    VIGILANT,
     REGENERATION,
     ROBUST,
     OVERWHELM

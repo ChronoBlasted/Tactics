@@ -87,10 +87,12 @@ public class MatchManager : MonoSingleton<MatchManager>
         cardToEffect.StatusList.Remove(statusToRemove);
     }
     
-    public void ProcessAttack(object[] cards, APlayer playerDefend)
+    public void ProcessAttack(object[] data)
     {
-        ACard attacker = (ACard)cards[0];
-        ACard defenser = (ACard)cards[1];
+        ACard attacker = (ACard)data[0];
+        ACard defenser = (ACard)data[1];
+        APlayer playerDefend = (APlayer)data[2];
+
         if (defenser == null)
         {
             playerDefend.TakeDamage(attacker.GetAttack());
