@@ -12,6 +12,9 @@ public class ACard : ALife
     public void Init()
     {
         CardRenderer.Init(EntityData);
+
+        GameEventSystem.Instance.AddEvent(EventType.ONSTARTTURN, OnStartTurn);
+        GameEventSystem.Instance.AddEvent(EventType.ONENDTURN, OnEndTurn);
     }
 
     public void Attack()
@@ -53,9 +56,8 @@ public class ACard : ALife
 
     }
 
-    public void OnStartTurn()
+    public void OnStartTurn(object[] actionData = null)
     {
-
     }
 
     public void Sacrifice()
@@ -63,9 +65,9 @@ public class ACard : ALife
 
     }
 
-    public void OnEndTurn()
+    public void OnEndTurn(object[] actionData = null)
     {
-
+        if (StatusList.Contains(Status.BURN)) TakeDamage(1);
     }
 
     public int GetAttack() => BonusAttack + EntityData.attack;
