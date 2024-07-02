@@ -19,6 +19,12 @@ public class Board : MonoBehaviour
         Transform sideToSpawn = isPlayerCard ? playerSideBench : opponentSideBench;
         List<ACard> cardBench = isPlayerCard ? playerCardBench : opponentCardBench;
 
+        if (cardBench.Count>=5)
+        {
+            UIManager.Instance.DoFloatingText("You already have 5 card in world",Color.red);
+            cardToPlay.CardRenderer.ResetCardInHand();
+        }
+
         cardBench.Add(cardToPlay);
 
         // Trouver le premier slot libre

@@ -202,6 +202,12 @@ public class MatchManager : MonoSingleton<MatchManager>
         {
             defenser.Attack(attacker);
         }
+        else
+        {
+            if (!attacker.StatusList.Contains(Status.STUN)) attacker.Attack(defenser);
+            defenser.Attack(attacker);
+            if (attacker.StatusOnImpact.Contains(Status.STUN)) AddStatus(Status.STUN, defenser);
+        }
 
         if (attacker.StatusOnImpact.Contains(Status.STUN))
         {
