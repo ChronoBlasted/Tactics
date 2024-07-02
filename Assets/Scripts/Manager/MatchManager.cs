@@ -39,7 +39,7 @@ public class MatchManager : MonoSingleton<MatchManager>
 
     void UpdateTurn()
     {
-        if (roundCount != 0)
+        if (roundCount != 1)
         {
             Attack(isPlayerTurn);
             GameEventSystem.Instance.Send(EventType.ONENDTURN, null);
@@ -101,8 +101,7 @@ public class MatchManager : MonoSingleton<MatchManager>
             card.PlayCard();
         }
 
-        firstCard = false;
-
+        firstCard = false; // TODO a mettre ailleurs
     }
 
     public void CheckFamily(List<ACard> benchToSeek)
@@ -157,7 +156,7 @@ public class MatchManager : MonoSingleton<MatchManager>
     {
         if (cardToAffect.StatusList.Contains(statusToAdd) == false)
         {
-            cardToAffect.StatusList.Add(statusToAdd);
+            cardToAffect.AddStatus(statusToAdd);
         }
     }
 
@@ -165,7 +164,7 @@ public class MatchManager : MonoSingleton<MatchManager>
     {
         if (cardToAffect.StatusOnImpact.Contains(statusToAdd) == false)
         {
-            cardToAffect.StatusOnImpact.Add(statusToAdd);
+            cardToAffect.AddImpactStatus(statusToAdd);
         }
     }
 
@@ -173,7 +172,7 @@ public class MatchManager : MonoSingleton<MatchManager>
     {
         if (cardToAffect.StatusList.Contains(statusToRemove))
         {
-            cardToAffect.StatusList.Remove(statusToRemove);
+            cardToAffect.RemoveStatus(statusToRemove);
         }
     }
 

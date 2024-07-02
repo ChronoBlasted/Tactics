@@ -6,22 +6,25 @@ using UnityEngine;
 
 public class ACard : ALife
 {
-    public List<Status> StatusList, StatusOnImpact;
+    List<Status> statusList = new List<Status>();
+    List<Status> statusOnImpact = new List<Status>();
+
     public int BonusAttack;
     public CardRenderer CardRenderer;
     public bool isPlayerCard;
 
+    public List<Status> StatusList { get => statusList; }
+    public List<Status> StatusOnImpact { get => statusOnImpact; }
+
     public void Init(bool isPlayerCard)
     {
-        GameEventSystem.Instance.AddEvent(EventType.ONSTARTTURN, OnStartTurn);
-        GameEventSystem.Instance.AddEvent(EventType.ONENDTURN, OnEndTurn);
 
         this.isPlayerCard = isPlayerCard;
 
         CardRenderer.Init(EntityData);
 
-        StatusList.Add(EntityData.status);
-        StatusOnImpact.Add(EntityData.StatusOnImpact);
+        AddStatus(EntityData.status);
+        AddImpactStatus(EntityData.StatusOnImpact);
 
         Health = GetMaxHealth();
 
@@ -31,11 +34,10 @@ public class ACard : ALife
 
     public bool Attack(ALife enemyLife)
     {
-        if (StatusList.Contains(Status.STUN))
+        if (statusList.Contains(Status.STUN))
         {
-            StatusList.Remove(Status.STUN);
-            StatusList.Add(Status.VIGILANT);
-
+            RemoveStatus(Status.STUN);
+            AddStatus(Status.VIGILANT);
             return false;
         }
         enemyLife.TakeDamage(GetAttack());
@@ -45,9 +47,12 @@ public class ACard : ALife
 
     public void PlayCard()
     {
+        GameEventSystem.Instance.AddEvent(EventType.ONSTARTTURN, OnStartTurn);
+        GameEventSystem.Instance.AddEvent(EventType.ONENDTURN, OnEndTurn);
+
         if (MatchManager.Instance.firstCard)
         {
-            if (StatusList.Contains(Status.DAYBREAK))
+            if (statusList.Contains(Status.DAYBREAK))
             {
                 AddAttack(2);
             }
@@ -55,7 +60,7 @@ public class ACard : ALife
 
         if (!MatchManager.Instance.firstCard)
         {
-            if (StatusList.Contains(Status.NIGHTFALL))
+            if (statusList.Contains(Status.NIGHTFALL))
             {
                 AddHealth(1);
             }
@@ -67,7 +72,7 @@ public class ACard : ALife
 
     public override bool TakeDamage(int amountDamage)
     {
-        if (StatusList.Contains(Status.ROBUST)) amountDamage--;
+        if (statusList.Contains(Status.ROBUST)) amountDamage--;
 
         var isDead = base.TakeDamage(amountDamage);
 
@@ -112,7 +117,7 @@ public class ACard : ALife
 
     public void OnStartTurn(object[] actionData = null)
     {
-        if (StatusList.Contains(Status.REGENERATION))
+        if (statusList.Contains(Status.REGENERATION))
         {
             Health = GetMaxHealth();
 
@@ -132,9 +137,39 @@ public class ACard : ALife
 
     public void OnEndTurn(object[] actionData = null)
     {
-        if (StatusList.Contains(Status.BURN)) TakeDamage(1);
-        if (StatusList.Contains(Status.CURSE)) AddAttack(-1);
-        if (StatusList.Contains(Status.GROWTH)) AddHealth(1);
+        if (statusList.Contains(Status.BURN)) TakeDamage(1);
+        if (statusList.Contains(Status.CURSE)) AddAttack(-1);
+        if (statusList.Contains(Status.GROWTH)) AddHealth(1);
+    }
+
+    public void AddStatus(Status statusToAdd)
+    {
+        if (statusToAdd == Status.NONE) return;
+
+        statusList.Add(statusToAdd);
+
+        CardRenderer.UpdateDesc();
+    }
+    public void RemoveStatus(Status statusToRemove)
+    {
+        statusList.Remove(statusToRemove);
+
+        CardRenderer.UpdateDesc();
+    }
+
+    public void AddImpactStatus(Status statusToAdd)
+    {
+        if (statusToAdd == Status.NONE) return;
+
+        statusOnImpact.Add(statusToAdd);
+
+        CardRenderer.UpdateDesc();
+    }
+    public void RemoveImpactStatus(Status statusToAdd)
+    {
+        statusOnImpact.Remove(statusToAdd);
+
+        CardRenderer.UpdateDesc();
     }
 
     public int GetAttack() => Math.Clamp(BonusAttack + EntityData.attack, 0, 999);

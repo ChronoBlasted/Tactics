@@ -21,8 +21,10 @@ public class Board : MonoBehaviour
 
         if (cardBench.Count >= 5)
         {
-            UIManager.Instance.DoFloatingText("You already have 5 card in world", Color.red);
+            UIManager.Instance.DoFloatingText("You already have 5 card on the bench", Color.red);
             cardToPlay.CardRenderer.ResetCardInHand();
+            yield break;
+
         }
 
         cardBench.Add(cardToPlay);

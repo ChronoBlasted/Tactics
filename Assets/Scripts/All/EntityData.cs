@@ -8,7 +8,6 @@ public class EntityData : ScriptableObject
     public string entityName;
     public Sprite visual;
     public Element element;
-    public string description;
     public int attack;
     public int maxHealth;
     public int level;

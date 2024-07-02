@@ -96,8 +96,8 @@ public class SacrificePopup : Popup
 
     public void HandleReturn()
     {
-        cardToPlay.CardRenderer.ResetCardInHand();
-
         ClosePopup();
+
+        cardToPlay.CardRenderer.ResetCardInHand();
     }
 }

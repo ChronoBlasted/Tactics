@@ -46,7 +46,7 @@ public class CardRenderer : MonoBehaviour,
         background.sprite = ColorManager.Instance.GetBackgroundByElement(data.element);
         nameTxt.text = data.name;
         levelTxt.text = data.level.ToString();
-        descTxt.text = data.description;
+        descTxt.text = "";
         damageTxt.text = data.attack.ToString();
         heatlhTxt.text = data.maxHealth.ToString();
     }
@@ -61,6 +61,35 @@ public class CardRenderer : MonoBehaviour,
 
             OnBeginDragEvent?.Invoke();
         }
+    }
+
+    public void UpdateDesc()
+    {
+        string status = "";
+        string statusOnImpact = "";
+
+        if (card.StatusList.Count > 0)
+        {
+            status += "Status :";
+            for (int i = 0; i < card.StatusList.Count; i++)
+            {
+                status += " " + card.StatusList[i].ToString();
+                if (i < card.StatusList.Count - 1) status += ",";
+            }
+
+        }
+
+        if (card.StatusOnImpact.Count > 0)
+        {
+            statusOnImpact += "On impact :";
+            for (int i = 0; i < card.StatusOnImpact.Count; i++)
+            {
+                statusOnImpact += " " + card.StatusOnImpact[i].ToString();
+                if (i < card.StatusOnImpact.Count - 1) statusOnImpact += ",";
+            }
+        }
+
+        descTxt.text = status + "\n" + statusOnImpact;
     }
 
     public void OnDrag(PointerEventData eventData)
