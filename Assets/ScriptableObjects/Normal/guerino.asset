@@ -12,10 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6effd62876aabc049a1754d97adfdd6c, type: 3}
   m_Name: Guerino
   m_EditorClassIdentifier: 
-  entityName: guerino
+  entityName: Guerino
   visual: {fileID: 21300000, guid: 152afe8911f720847bc6fede384e538f, type: 3}
   element: 0
-  description: 
   attack: 3
   maxHealth: 3
   level: 2

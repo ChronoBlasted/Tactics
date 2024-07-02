@@ -12,10 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6effd62876aabc049a1754d97adfdd6c, type: 3}
   m_Name: Watiti
   m_EditorClassIdentifier: 
-  entityName: guerino
+  entityName: Watiti
   visual: {fileID: 21300000, guid: 3a33a331e6f1dab4ab331628b6811f15, type: 3}
   element: 2
-  description: 
   attack: 1
   maxHealth: 1
   level: 1

@@ -12,10 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6effd62876aabc049a1754d97adfdd6c, type: 3}
   m_Name: Chetiflor
   m_EditorClassIdentifier: 
-  entityName: chetiflor
+  entityName: Chetiflor
   visual: {fileID: 21300000, guid: 635a0083b0cacd340970ddb6f5fe3aa7, type: 3}
   element: 3
-  description: 
   attack: 7
   maxHealth: 4
   level: 6

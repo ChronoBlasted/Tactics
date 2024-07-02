@@ -12,10 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6effd62876aabc049a1754d97adfdd6c, type: 3}
   m_Name: Vers
   m_EditorClassIdentifier: 
-  entityName: vers
+  entityName: Vers
   visual: {fileID: 21300000, guid: 4c469cf3f6950914f838490e039460d2, type: 3}
   element: 3
-  description: 
   attack: 1
   maxHealth: 1
   level: 2

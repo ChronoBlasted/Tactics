@@ -15,7 +15,6 @@ MonoBehaviour:
   entityName: Scarabrute
   visual: {fileID: 21300000, guid: 5f7695ffa70f68e41bbc0d65117849b1, type: 3}
   element: 3
-  description: 
   attack: 2
   maxHealth: 5
   level: 3
