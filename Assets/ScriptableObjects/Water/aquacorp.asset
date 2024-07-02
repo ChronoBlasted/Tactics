@@ -20,4 +20,4 @@ MonoBehaviour:
   maxHealth: 10
   level: 7
   status: 0
-  StatusOnImpact: 5
+  StatusOnImpact: 0
