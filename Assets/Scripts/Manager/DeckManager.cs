@@ -41,8 +41,6 @@ public class DeckManager : MonoSingleton<DeckManager>
             DrawCard(false);
         }
     }
-
-
     public void DrawCard(bool isPlayerTurn)
     {
         if (playerDeck.Count > 0 && isPlayerTurn)

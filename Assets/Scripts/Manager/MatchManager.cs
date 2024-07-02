@@ -84,7 +84,7 @@ public class MatchManager : MonoSingleton<MatchManager>
         }
         else
         {
-            StartCoroutine(Board.SpawnCard(isPlayerTurn, card));
+            Board.SpawnCard(isPlayerTurn, card);
 
             card.PlayCard();
         }
@@ -106,30 +106,30 @@ public class MatchManager : MonoSingleton<MatchManager>
 
     public void AddBoostFamily()
     {
-        if (fire>2)
+        if (fire > 2)
         {
             for (int i = 0; i < Board.opponentCardBench.Count; i++)
             {
-                AddStatus(Status.BURN,Board.opponentCardBench[i]);
+                AddStatus(Status.BURN, Board.opponentCardBench[i]);
             }
 
-            
+
         }
-        else if (water>2)
+        else if (water > 2)
         {
             for (int i = 0; i < Board.opponentCardBench.Count; i++)
             {
-                AddStatus(Status.OVERWHELM,Board.playerCardBench[i]);
+                AddStatus(Status.OVERWHELM, Board.playerCardBench[i]);
             }
 
-           
+
         }
-        else if(grass>2)
+        else if (grass > 2)
         {
             for (int i = 0; i < Board.opponentCardBench.Count; i++)
             {
-                AddStatus(Status.GROWTH,Board.playerCardBench[i]);
-            } 
+                AddStatus(Status.GROWTH, Board.playerCardBench[i]);
+            }
         }
         water = 0;
         grass = 0;

@@ -15,15 +15,12 @@ public class Board : MonoBehaviour
     [SerializeField] Image whosTurn;
     [SerializeField] Sprite playerTurnSprite, opponentTurnSprite;
 
-    public IEnumerator SpawnCard(bool isPlayerCard, ACard cardToPlay)
+    public void SpawnCard(bool isPlayerCard, ACard cardToPlay)
     {
         Transform sideToSpawn = isPlayerCard ? playerSideBench : opponentSideBench;
         List<ACard> cardBench = isPlayerCard ? playerCardBench : opponentCardBench;
 
         cardBench.Add(cardToPlay);
-
-
-
 
         // Trouver le premier slot libre
         for (int i = 0; i < sideToSpawn.childCount; i++)
@@ -31,16 +28,12 @@ public class Board : MonoBehaviour
             Transform slot = sideToSpawn.GetChild(i);
             if (slot.childCount == 0)
             {
-                //cardToPlay.CardRenderer.transform.SetParent(UIManager.Instance.MainCanvas.transform);
+                cardToPlay.CardRenderer.transform.SetParent(UIManager.Instance.MainCanvas.transform);
 
                 cardToPlay.transform.SetParent(slot);
-
                 cardToPlay.transform.localPosition = Vector3.zero;
 
-                yield return new WaitForEndOfFrame();
-
-                //cardToPlay.CardRenderer.transform.SetParent(cardToPlay.transform);
-
+                cardToPlay.CardRenderer.transform.SetParent(cardToPlay.transform);
                 cardToPlay.CardRenderer.transform.localPosition = Vector3.zero;
                 break;
             }
