@@ -8,13 +8,21 @@ public class ACard : ALife
     public List<Status> StatusList;
     public int BonusAttack;
     public CardRenderer CardRenderer;
+    public bool isPlayerCard;
 
-    public void Init()
+    public void Init(bool isPlayerCard)
     {
-        CardRenderer.Init(EntityData);
-
         GameEventSystem.Instance.AddEvent(EventType.ONSTARTTURN, OnStartTurn);
         GameEventSystem.Instance.AddEvent(EventType.ONENDTURN, OnEndTurn);
+
+        this.isPlayerCard = isPlayerCard;
+
+        CardRenderer.Init(EntityData);
+
+        Health = GetMaxHealth();
+
+        CardRenderer.UpdateHealth(Health);
+        CardRenderer.UpdateDamage(GetAttack());
     }
 
     public void Attack(ALife enemyLife)
@@ -49,7 +57,12 @@ public class ACard : ALife
     public override bool TakeDamage(int amountDamage)
     {
         if (StatusList.Contains(Status.ROBUST)) amountDamage--;
-        return base.TakeDamage(amountDamage);
+
+        var isDead = base.TakeDamage(amountDamage);
+
+        CardRenderer.UpdateHealth(Health);
+
+        return isDead;
     }
 
     public override void HealthDie()
@@ -63,14 +76,20 @@ public class ACard : ALife
 
     public void Die()
     {
+        if (MatchManager.Instance.Board.playerCardBench.Contains(this)) MatchManager.Instance.Board.playerCardBench.Remove(this);
+        if (MatchManager.Instance.Board.opponentCardBench.Contains(this)) MatchManager.Instance.Board.opponentCardBench.Remove(this);
 
-        Debug.Log("Die");
+        CardRenderer.MoveUpTween.Kill();
+
+        Destroy(gameObject);
     }
 
     public void AddHealth(int healthAdd)
     {
         BonusMaxHealth += healthAdd;
         Health += healthAdd;
+
+        CardRenderer.UpdateHealth(Health);
     }
 
     public void AddAttack(int attackAdd)
@@ -81,6 +100,8 @@ public class ACard : ALife
         {
             BonusAttack = 0;
         }
+
+        CardRenderer.UpdateDamage(GetAttack());
     }
 
     public void OnStartTurn(object[] actionData = null)
@@ -90,8 +111,6 @@ public class ACard : ALife
 
     public void Sacrifice()
     {
-        //Sacrifice
-
         if (MatchManager.Instance.Board.playerCardBench.Contains(this)) MatchManager.Instance.Board.playerCardBench.Remove(this);
         if (MatchManager.Instance.Board.opponentCardBench.Contains(this)) MatchManager.Instance.Board.opponentCardBench.Remove(this);
 

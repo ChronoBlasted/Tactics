@@ -46,13 +46,13 @@ public class DeckManager : MonoSingleton<DeckManager>
         if (playerDeck.Count > 0 && isPlayerTurn)
         {
             tempCardData = GetRandomCard(playerDeck);
-            playerCardHolder.AddCard(tempCardData);
+            playerCardHolder.AddCard(tempCardData, isPlayerTurn);
             playerDeck.Remove(tempCardData);
         }
         if (opponentDeck.Count > 0 && !isPlayerTurn)
         {
             tempCardData = GetRandomCard(opponentDeck);
-            opponentCardHolder.AddCard(tempCardData);
+            opponentCardHolder.AddCard(tempCardData, isPlayerTurn);
             opponentDeck.Remove(tempCardData);
         }
     }

@@ -11,13 +11,13 @@ public class CardHolder : MonoBehaviour
     public CanvasGroup cg;
     public Transform spawnTransform;
 
-    public void AddCard(EntityData entityData)
+    public void AddCard(EntityData entityData, bool isPlayerCard)
     {
         var card = Instantiate(cardPrefab, transform.position, transform.rotation, transform);
 
         card.EntityData = entityData;
 
-        card.Init();
+        card.Init(isPlayerCard);
 
         card.CardRenderer.transform.position = spawnTransform.position;
         card.CardRenderer.transform.DOLocalMove(Vector3.zero, .5f).SetEase(Ease.OutSine);

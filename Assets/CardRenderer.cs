@@ -19,7 +19,7 @@ public class CardRenderer : MonoBehaviour,
     [SerializeField] Image visual;
     [SerializeField] TMP_Text nameTxt;
     [SerializeField] TMP_Text descTxt;
-    [SerializeField] TMP_Text attackTxt;
+    [SerializeField] TMP_Text damageTxt;
     [SerializeField] TMP_Text heatlhTxt;
     [SerializeField] TMP_Text levelTxt;
     [SerializeField] Image raycastPadding;
@@ -47,7 +47,7 @@ public class CardRenderer : MonoBehaviour,
         nameTxt.text = data.name;
         levelTxt.text = data.level.ToString();
         descTxt.text = data.description;
-        attackTxt.text = data.attack.ToString();
+        damageTxt.text = data.attack.ToString();
         heatlhTxt.text = data.maxHealth.ToString();
     }
 
@@ -195,4 +195,16 @@ public class CardRenderer : MonoBehaviour,
             MoveUpTween = transform.DOLocalMoveY(256, .2f);
         }
     }
+
+    public void UpdateHealth(int newHealth)
+    {
+        heatlhTxt.text = newHealth.ToString();
+    }
+
+    public void UpdateDamage(int newDamage)
+    {
+        damageTxt.text = newDamage.ToString();
+    }
+
+
 }
