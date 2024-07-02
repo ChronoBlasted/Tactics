@@ -1,7 +1,5 @@
-using System.Collections;
 using System.Collections.Generic;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class SacrificePopup : Popup
@@ -86,7 +84,7 @@ public class SacrificePopup : Popup
                 card.Sacrifice();
             }
 
-            MatchManager.Instance.Board.SpawnCard(MatchManager.Instance.isPlayerTurn, cardToPlay);
+            MatchManager.Instance.Board.DoSpawnCard(MatchManager.Instance.isPlayerTurn, cardToPlay);
 
             cardToPlay.PlayCard();
         }
