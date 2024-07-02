@@ -18,21 +18,33 @@ public class Board : MonoBehaviour
     public IEnumerator SpawnCard(bool isPlayerCard, ACard cardToPlay)
     {
         Transform sideToSpawn = isPlayerCard ? playerSideBench : opponentSideBench;
+        List<ACard> cardBench = isPlayerCard ? playerCardBench : opponentCardBench;
 
-        if (isPlayerCard) playerCardBench.Add(cardToPlay);
-        else opponentCardBench.Add(cardToPlay);
+        cardBench.Add(cardToPlay);
 
-        cardToPlay.CardRenderer.transform.SetParent(UIManager.Instance.MainCanvas.transform);
 
-        cardToPlay.transform.SetParent(sideToSpawn);
 
-        cardToPlay.transform.localPosition = Vector3.zero;
 
-        yield return new WaitForEndOfFrame();
+        // Trouver le premier slot libre
+        for (int i = 0; i < sideToSpawn.childCount; i++)
+        {
+            Transform slot = sideToSpawn.GetChild(i);
+            if (slot.childCount == 0)
+            {
+                //cardToPlay.CardRenderer.transform.SetParent(UIManager.Instance.MainCanvas.transform);
 
-        cardToPlay.CardRenderer.transform.SetParent(cardToPlay.transform);
+                cardToPlay.transform.SetParent(slot);
 
-        cardToPlay.CardRenderer.transform.DOLocalMove(Vector3.zero, .2f);
+                cardToPlay.transform.localPosition = Vector3.zero;
+
+                yield return new WaitForEndOfFrame();
+
+                //cardToPlay.CardRenderer.transform.SetParent(cardToPlay.transform);
+
+                cardToPlay.CardRenderer.transform.localPosition = Vector3.zero;
+                break;
+            }
+        }
     }
 
     public void UpdateTurn(bool isPlayerTurn)
