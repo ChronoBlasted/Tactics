@@ -19,9 +19,9 @@ public class Board : MonoBehaviour
         Transform sideToSpawn = isPlayerCard ? playerSideBench : opponentSideBench;
         List<ACard> cardBench = isPlayerCard ? playerCardBench : opponentCardBench;
 
-        if (cardBench.Count>=5)
+        if (cardBench.Count >= 5)
         {
-            UIManager.Instance.DoFloatingText("You already have 5 card in world",Color.red);
+            UIManager.Instance.DoFloatingText("You already have 5 card in world", Color.red);
             cardToPlay.CardRenderer.ResetCardInHand();
         }
 
@@ -45,6 +45,8 @@ public class Board : MonoBehaviour
                 break;
             }
         }
+
+        MatchManager.Instance.CheckFamily(cardBench);
     }
 
     public void DoSpawnCard(bool isPlayerCard, ACard cardToPlay)

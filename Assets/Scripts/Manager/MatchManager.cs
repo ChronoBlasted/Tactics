@@ -103,7 +103,6 @@ public class MatchManager : MonoSingleton<MatchManager>
 
         firstCard = false;
 
-        CheckFamily(benchToSeek);
     }
 
     public void CheckFamily(List<ACard> benchToSeek)
@@ -120,21 +119,21 @@ public class MatchManager : MonoSingleton<MatchManager>
 
     public void AddBoostFamily(List<ACard> benchToSeek)
     {
-        if (fire > 1)
+        if (fire > 2)
         {
             for (int i = 0; i < benchToSeek.Count; i++)
             {
-                AddStatus(Status.BURN, benchToSeek[i]);
+                AddStatusOnImpact(Status.BURN, benchToSeek[i]);
             }
         }
-        else if (water > 1)
+        else if (water > 2)
         {
             for (int i = 0; i < benchToSeek.Count; i++)
             {
-                AddStatus(Status.OVERWHELM, benchToSeek[i]);
+                AddStatusOnImpact(Status.OVERWHELM, benchToSeek[i]);
             }
         }
-        else if (grass > 1)
+        else if (grass > 2)
         {
             for (int i = 0; i < benchToSeek.Count; i++)
             {
