@@ -7,6 +7,8 @@ public class MatchManager : MonoSingleton<MatchManager>
 {
     public Board Board;
     public APlayer Player, Opponent;
+
+    public GameObject[] ListSlotPlayer, ListSlotEnemy;
     
     public bool isPlayerTurn;
     public bool firstCard;
@@ -36,13 +38,14 @@ public class MatchManager : MonoSingleton<MatchManager>
 
     void UpdateTurn()
     {
+        Attack(isPlayerTurn);
         if (roundCount != 0) GameEventSystem.Instance.Send(EventType.ONENDTURN, null);
         GameEventSystem.Instance.Send(EventType.NEWTURN, null);
         GameEventSystem.Instance.Send(EventType.ONSTARTTURN, null);
 
         Board.UpdateTurn(isPlayerTurn);
         DeckManager.Instance.UpdateTurn(isPlayerTurn);
-        Attack(isPlayerTurn);
+        
         firstCard = true;
         roundCount++;
     }
@@ -161,6 +164,10 @@ public class MatchManager : MonoSingleton<MatchManager>
         ACard defenser = (ACard)data[1];
         APlayer playerDefend = (APlayer)data[2];
 
+        // Debug.Log("Attacker = "+attacker);
+        // Debug.Log("defenser = "+defenser);
+        // Debug.Log("ennemy take damage = "+ playerDefend);
+        
         if (defenser == null)
         {
             playerDefend.TakeDamage(attacker.GetAttack());
@@ -187,28 +194,60 @@ public class MatchManager : MonoSingleton<MatchManager>
 
     public void Attack(bool isPlayerTurn)
     {
+        ACard attacker;
+        ACard defender;
         if (isPlayerTurn)
         {
-            for (int i = 0; i < Board.playerCardBench.Count(); i++)
+            for (int i = 0; i < ListSlotPlayer.Count(); i++)
             {
-                if (Board.playerCardBench[i] == null)
+                if (ListSlotPlayer[i].transform.childCount == 0)
                 {
                     return;
                 }
-                var data = new object[] { Board.playerCardBench[i],Board.opponentCardBench[i], Opponent };
-                ProcessAttack(data);
+                else
+                {
+                    attacker = ListSlotPlayer[i].transform.GetChild(0).GetComponent<ACard>();
+                }
+                
+                if (ListSlotEnemy[i].transform.childCount == 0)
+                {
+                    defender = null;
+                    var data = new object[] {attacker,defender, Opponent };
+                    ProcessAttack(data);
+                }
+                else
+                {
+                    defender = ListSlotEnemy[i].transform.GetChild(0).GetComponent<ACard>();
+                    var data = new object[] {attacker,defender, Opponent };
+                    ProcessAttack(data);
+                }
             }
         }
         else
         {
-            for (int i = 0; i < Board.opponentCardBench.Count(); i++)
+            for (int i = 0; i < ListSlotEnemy.Count(); i++)
             {
-                if (Board.opponentCardBench[i] == null)
+                if (ListSlotEnemy[i].transform.childCount == 0)
                 {
                     return;
                 }
-                var data = new object[] { Board.opponentCardBench[i],Board.playerCardBench[i], Player };
-                ProcessAttack(data);
+                else
+                {
+                    attacker = ListSlotEnemy[i].transform.GetChild(0).GetComponent<ACard>();
+                }
+                
+                if (ListSlotPlayer[i].transform.childCount == 0)
+                {
+                    defender = null;
+                    var data = new object[] {attacker,defender, Opponent };
+                    ProcessAttack(data);
+                }
+                else
+                {
+                    defender = ListSlotPlayer[i].transform.GetChild(0).GetComponent<ACard>();
+                    var data = new object[] {attacker,defender, Opponent };
+                    ProcessAttack(data);
+                }
             }
         }
 
