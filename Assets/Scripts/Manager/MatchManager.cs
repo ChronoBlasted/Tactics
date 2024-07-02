@@ -102,42 +102,43 @@ public class MatchManager : MonoSingleton<MatchManager>
         }
 
         firstCard = false;
-        CheckFamily();
+
+        CheckFamily(benchToSeek);
     }
 
-    public void CheckFamily()
+    public void CheckFamily(List<ACard> benchToSeek)
     {
-        for (int i = 0; i < Board.playerCardBench.Count; i++)
+        for (int i = 0; i < benchToSeek.Count; i++)
         {
-            if (Board.playerCardBench[i].EntityData.element == Element.FIRE) fire++;
-            if (Board.playerCardBench[i].EntityData.element == Element.GRASS) grass++;
-            if (Board.playerCardBench[i].EntityData.element == Element.WATER) water++;
+            if (benchToSeek[i].EntityData.element == Element.FIRE) fire++;
+            if (benchToSeek[i].EntityData.element == Element.GRASS) grass++;
+            if (benchToSeek[i].EntityData.element == Element.WATER) water++;
         }
 
-        AddBoostFamily();
+        AddBoostFamily(benchToSeek);
     }
 
-    public void AddBoostFamily()
+    public void AddBoostFamily(List<ACard> benchToSeek)
     {
         if (fire > 1)
         {
-            for (int i = 0; i < Board.opponentCardBench.Count; i++)
+            for (int i = 0; i < benchToSeek.Count; i++)
             {
-                AddStatus(Status.BURN, Board.opponentCardBench[i]);
+                AddStatus(Status.BURN, benchToSeek[i]);
             }
         }
         else if (water > 1)
         {
-            for (int i = 0; i < Board.playerCardBench.Count; i++)
+            for (int i = 0; i < benchToSeek.Count; i++)
             {
-                AddStatus(Status.OVERWHELM, Board.playerCardBench[i]);
+                AddStatus(Status.OVERWHELM, benchToSeek[i]);
             }
         }
         else if (grass > 1)
         {
-            for (int i = 0; i < Board.playerCardBench.Count; i++)
+            for (int i = 0; i < benchToSeek.Count; i++)
             {
-                AddStatus(Status.GROWTH, Board.playerCardBench[i]);
+                AddStatus(Status.GROWTH, benchToSeek[i]);
             }
         }
 
@@ -155,13 +156,26 @@ public class MatchManager : MonoSingleton<MatchManager>
 
     public void AddStatus(Status statusToAdd, ACard cardToAffect)
     {
-        Debug.Log("statue : "+statusToAdd+"vers la carte"+ cardToAffect);
-        cardToAffect.StatusList.Add(statusToAdd);
+        if (cardToAffect.StatusList.Contains(statusToAdd) == false)
+        {
+            cardToAffect.StatusList.Add(statusToAdd);
+        }
     }
 
-    public void RemoveStatus(ACard cardToEffect, Status statusToRemove)
+    public void AddStatusOnImpact(Status statusToAdd, ACard cardToAffect)
     {
-        cardToEffect.StatusList.Remove(statusToRemove);
+        if (cardToAffect.StatusOnImpact.Contains(statusToAdd) == false)
+        {
+            cardToAffect.StatusOnImpact.Add(statusToAdd);
+        }
+    }
+
+    public void RemoveStatus(Status statusToRemove, ACard cardToAffect)
+    {
+        if (cardToAffect.StatusList.Contains(statusToRemove))
+        {
+            cardToAffect.StatusList.Remove(statusToRemove);
+        }
     }
 
     public void ProcessAttack(object[] data)
@@ -169,10 +183,6 @@ public class MatchManager : MonoSingleton<MatchManager>
         ACard attacker = (ACard)data[0];
         ACard defenser = (ACard)data[1];
         APlayer playerDefend = (APlayer)data[2];
-
-        // Debug.Log("Attacker = "+attacker);
-        // Debug.Log("defenser = "+defenser);
-        // Debug.Log("ennemy take damage = "+ playerDefend);
 
         if (defenser == null)
         {
@@ -188,17 +198,19 @@ public class MatchManager : MonoSingleton<MatchManager>
             }
         }
 
-        if (!attacker.StatusList.Contains(Status.STUN)) attacker.Attack(defenser);
-        defenser.Attack(attacker);
-        if (attacker.StatusOnImpact.Contains(Status.BURN)) AddStatus(Status.BURN, defenser);
-        if (attacker.StatusOnImpact.Contains(Status.CURSE)) AddStatus(Status.CURSE, defenser);
-        if (defenser.StatusList.Contains(Status.VIGILANT))
+        if (attacker.Attack(defenser))
         {
-            RemoveStatus(defenser, Status.VIGILANT);
-            return;
+            defenser.Attack(attacker);
         }
 
-        if (attacker.StatusOnImpact.Contains(Status.STUN)) AddStatus(Status.STUN, defenser);
+        if (attacker.StatusOnImpact.Contains(Status.STUN))
+        {
+            if (defenser.StatusList.Contains(Status.VIGILANT)) RemoveStatus(Status.VIGILANT, defenser);
+            else AddStatus(Status.STUN, defenser);
+        }
+
+        if (attacker.StatusOnImpact.Contains(Status.BURN)) AddStatus(Status.BURN, defenser);
+        if (attacker.StatusOnImpact.Contains(Status.CURSE)) AddStatus(Status.CURSE, defenser);
     }
 
     public void Attack(bool isPlayerTurn)

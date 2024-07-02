@@ -1,4 +1,5 @@
 using DG.Tweening;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -18,7 +19,7 @@ public class ACard : ALife
         this.isPlayerCard = isPlayerCard;
 
         CardRenderer.Init(EntityData);
-        
+
         StatusList.Add(EntityData.status);
         StatusOnImpact.Add(EntityData.StatusOnImpact);
 
@@ -28,11 +29,18 @@ public class ACard : ALife
         CardRenderer.UpdateDamage(GetAttack());
     }
 
-    public void Attack(ALife enemyLife)
+    public bool Attack(ALife enemyLife)
     {
-        if (StatusList.Contains(Status.STUN)) return;
+        if (StatusList.Contains(Status.STUN))
+        {
+            StatusList.Remove(Status.STUN);
+            StatusList.Add(Status.VIGILANT);
+
+            return false;
+        }
         enemyLife.TakeDamage(GetAttack());
 
+        return true;
     }
 
     public void PlayCard()
@@ -99,17 +107,17 @@ public class ACard : ALife
     {
         BonusAttack += attackAdd;
 
-        if (BonusAttack < 0)
-        {
-            BonusAttack = 0;
-        }
-
         CardRenderer.UpdateDamage(GetAttack());
     }
 
     public void OnStartTurn(object[] actionData = null)
     {
-        if (StatusList.Contains(Status.REGENERATION)) Health = GetMaxHealth();
+        if (StatusList.Contains(Status.REGENERATION))
+        {
+            Health = GetMaxHealth();
+
+            CardRenderer.UpdateHealth(Health);
+        }
     }
 
     public void Sacrifice()
@@ -129,7 +137,7 @@ public class ACard : ALife
         if (StatusList.Contains(Status.GROWTH)) AddHealth(1);
     }
 
-    public int GetAttack() => BonusAttack + EntityData.attack;
+    public int GetAttack() => Math.Clamp(BonusAttack + EntityData.attack, 0, 999);
 
     public int GetMaxHealth() => BonusMaxHealth + EntityData.maxHealth;
 

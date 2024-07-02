@@ -17,6 +17,7 @@ MonoBehaviour:
   element: 3
   description: 
   attack: 3
-  maxHealth: 1
+  maxHealth: 10
   level: 2
-  status: 3
+  status: 0
+  StatusOnImpact: 5
