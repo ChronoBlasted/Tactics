@@ -21,6 +21,13 @@ public class APlayer : ALife
         return isDead;
     }
 
+    public override void HealthDie()
+    {
+        base.HealthDie();
+        
+        GameManager.Instance.UpdateStateToEnd();
+    }
+
     private void Update()
     {
         if (transform.rotation.eulerAngles != Vector3.zero)

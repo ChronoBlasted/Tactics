@@ -14,7 +14,7 @@ public class ALife : ABase
     {
         Health -= amountDamage;
 
-        if (Health < 0)
+        if (Health <= 0)
         {
             HealthDie();
 
