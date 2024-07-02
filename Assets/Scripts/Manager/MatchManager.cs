@@ -187,18 +187,25 @@ public class MatchManager : MonoSingleton<MatchManager>
                 playerDefend.TakeDamage(attacker.GetAttack() - defenser.Health);
             }
         }
-
-        if (!attacker.StatusList.Contains(Status.STUN)) attacker.Attack(defenser);
-        defenser.Attack(attacker);
-        if (attacker.StatusOnImpact.Contains(Status.BURN)) AddStatus(Status.BURN, defenser);
-        if (attacker.StatusOnImpact.Contains(Status.CURSE)) AddStatus(Status.CURSE, defenser);
+        
+        
         if (defenser.StatusList.Contains(Status.VIGILANT))
         {
             RemoveStatus(defenser, Status.VIGILANT);
             return;
         }
+        else
+        {
+            if (!attacker.StatusList.Contains(Status.STUN)) attacker.Attack(defenser);
+            defenser.Attack(attacker);
+            if (attacker.StatusOnImpact.Contains(Status.STUN)) AddStatus(Status.STUN, defenser);
+        }
 
-        if (attacker.StatusOnImpact.Contains(Status.STUN)) AddStatus(Status.STUN, defenser);
+
+        
+        if (attacker.StatusOnImpact.Contains(Status.BURN)) AddStatus(Status.BURN, defenser);
+        if (attacker.StatusOnImpact.Contains(Status.CURSE)) AddStatus(Status.CURSE, defenser);
+        
     }
 
     public void Attack(bool isPlayerTurn)
