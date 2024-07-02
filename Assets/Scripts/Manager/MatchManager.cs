@@ -39,14 +39,15 @@ public class MatchManager : MonoSingleton<MatchManager>
 
     void UpdateTurn()
     {
-        Attack(isPlayerTurn);
         if (roundCount != 0) GameEventSystem.Instance.Send(EventType.ONENDTURN, null);
         GameEventSystem.Instance.Send(EventType.NEWTURN, null);
         GameEventSystem.Instance.Send(EventType.ONSTARTTURN, null);
 
         Board.UpdateTurn(isPlayerTurn);
         DeckManager.Instance.UpdateTurn(isPlayerTurn);
-        
+
+        Attack(isPlayerTurn);
+
         firstCard = true;
         roundCount++;
     }

@@ -1,18 +1,29 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class APlayer : ALife
 {
-    // Start is called before the first frame update
-    void Start()
+    [SerializeField] TMP_Text lifeTxt;
+
+    private void Start()
     {
-        
+        lifeTxt.text = Health.ToString();
     }
 
-    // Update is called once per frame
-    void Update()
+    public override bool TakeDamage(int amountDamage)
     {
-        
+        var isDead = base.TakeDamage(amountDamage);
+
+        lifeTxt.text = Health.ToString();
+
+        return isDead;
+    }
+
+    private void Update()
+    {
+        if (transform.rotation.eulerAngles != Vector3.zero)
+            transform.rotation = Quaternion.Euler(0, 0, 0);
     }
 }
