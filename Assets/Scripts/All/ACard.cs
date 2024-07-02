@@ -15,6 +15,8 @@ public class ACard : ALife
 
         GameEventSystem.Instance.AddEvent(EventType.ONSTARTTURN, OnStartTurn);
         GameEventSystem.Instance.AddEvent(EventType.ONENDTURN, OnEndTurn);
+
+        Health = GetMaxHealth();
     }
 
     public void Attack(ALife enemyLife)

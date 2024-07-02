@@ -6,6 +6,8 @@ using UnityEngine;
 public class MatchManager : MonoSingleton<MatchManager>
 {
     public Board Board;
+    public APlayer Player, Opponent;
+    
     public bool isPlayerTurn;
     public bool firstCard;
 
@@ -40,7 +42,7 @@ public class MatchManager : MonoSingleton<MatchManager>
 
         Board.UpdateTurn(isPlayerTurn);
         DeckManager.Instance.UpdateTurn(isPlayerTurn);
-
+        Attack(isPlayerTurn);
         firstCard = true;
         roundCount++;
     }
@@ -181,5 +183,34 @@ public class MatchManager : MonoSingleton<MatchManager>
             return;
         }
         if (attacker.StatusList.Contains(Status.STUN)) AddStatus(Status.STUN, defenser);
+    }
+
+    public void Attack(bool isPlayerTurn)
+    {
+        if (isPlayerTurn)
+        {
+            for (int i = 0; i < Board.playerCardBench.Count(); i++)
+            {
+                if (Board.playerCardBench[i] == null)
+                {
+                    return;
+                }
+                var data = new object[] { Board.playerCardBench[i],Board.opponentCardBench[i], Opponent };
+                ProcessAttack(data);
+            }
+        }
+        else
+        {
+            for (int i = 0; i < Board.opponentCardBench.Count(); i++)
+            {
+                if (Board.opponentCardBench[i] == null)
+                {
+                    return;
+                }
+                var data = new object[] { Board.opponentCardBench[i],Board.playerCardBench[i], Player };
+                ProcessAttack(data);
+            }
+        }
+
     }
 }
