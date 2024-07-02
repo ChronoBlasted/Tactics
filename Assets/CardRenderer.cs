@@ -75,9 +75,12 @@ public class CardRenderer : MonoBehaviour,
     {
         if (isInHand)
         {
-            if (transform.position.y > 400)
+            var YtoPlay = card.isPlayerCard ? 400 : -400;
+
+            if (transform.position.y > YtoPlay)
             {
                 isInHand = false;
+
                 raycastPadding.enabled = false;
 
                 var data = new object[] { card };
@@ -207,4 +210,12 @@ public class CardRenderer : MonoBehaviour,
     }
 
 
+    private void Update()
+    {
+        if (!isInHand)
+        {
+            if (transform.rotation.eulerAngles != Vector3.zero)
+                transform.rotation = Quaternion.Euler(0, 0, 0);
+        }
+    }
 }

@@ -58,6 +58,7 @@ MonoBehaviour:
   StatusList: 
   BonusAttack: 0
   CardRenderer: {fileID: 4652389966698549202}
+  isPlayerCard: 0
 --- !u!223 &3477261186206363019
 Canvas:
   m_ObjectHideFlags: 0
@@ -972,7 +973,7 @@ MonoBehaviour:
   visual: {fileID: 8264015017912790025}
   nameTxt: {fileID: 3128513247938805338}
   descTxt: {fileID: 6604828490236371541}
-  attackTxt: {fileID: 5760293308322021470}
+  damageTxt: {fileID: 5760293308322021470}
   heatlhTxt: {fileID: 4649077516139661290}
   levelTxt: {fileID: 3391188878319427860}
   raycastPadding: {fileID: 5980461970467815540}

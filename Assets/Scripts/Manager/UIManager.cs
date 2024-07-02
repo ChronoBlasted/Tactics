@@ -31,8 +31,6 @@ public class UIManager : MonoSingleton<UIManager>
 
         InitView();
         InitPopup();
-
-        ChangeView(_gameView);
     }
 
     public void InitView()

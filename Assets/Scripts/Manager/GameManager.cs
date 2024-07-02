@@ -29,6 +29,8 @@ public class GameManager : MonoSingleton<GameManager>
         MatchManager.Instance.Init();
 
         Time.timeScale = 1.0f;
+
+        UpdateGameState(gameState);
     }
 
     public void StartGame()

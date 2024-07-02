@@ -12,9 +12,6 @@ public class Board : MonoBehaviour
     public List<ACard> playerCardBench;
     public List<ACard> opponentCardBench;
 
-    [SerializeField] Image whosTurn;
-    [SerializeField] Sprite playerTurnSprite, opponentTurnSprite;
-
     public IEnumerator SpawnCard(bool isPlayerCard, ACard cardToPlay)
     {
         yield return new WaitForEndOfFrame();
@@ -51,6 +48,7 @@ public class Board : MonoBehaviour
 
     public void UpdateTurn(bool isPlayerTurn)
     {
-        whosTurn.sprite = isPlayerTurn ? playerTurnSprite : opponentTurnSprite;
+        if (isPlayerTurn) transform.DORotate(new Vector3(0, 0, 0), .2f).SetEase(Ease.OutSine);
+        else transform.DORotate(new Vector3(0, 0, -180), .2f).SetEase(Ease.OutSine);
     }
 }

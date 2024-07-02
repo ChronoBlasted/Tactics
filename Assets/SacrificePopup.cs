@@ -27,8 +27,8 @@ public class SacrificePopup : Popup
     {
         base.OpenPopup();
 
-        var allCard = MatchManager.Instance.Board.playerCardBench;
-        var allCardHand = DeckManager.Instance.playerCardHolder.cards;
+        var allCard = cardToPlay.isPlayerCard ? MatchManager.Instance.Board.playerCardBench : MatchManager.Instance.Board.opponentCardBench;
+        var allCardHand = cardToPlay.isPlayerCard ? DeckManager.Instance.playerCardHolder.cards : DeckManager.Instance.opponentCardHolder.cards;
 
         foreach (var card in allCard)
         {
@@ -45,8 +45,8 @@ public class SacrificePopup : Popup
     {
         base.ClosePopup();
 
-        var allCard = MatchManager.Instance.Board.playerCardBench;
-        var allCardHand = DeckManager.Instance.playerCardHolder.cards;
+        var allCard = cardToPlay.isPlayerCard ? MatchManager.Instance.Board.playerCardBench : MatchManager.Instance.Board.opponentCardBench;
+        var allCardHand = cardToPlay.isPlayerCard ? DeckManager.Instance.playerCardHolder.cards : DeckManager.Instance.opponentCardHolder.cards;
 
         foreach (var card in allCard)
         {
@@ -61,7 +61,7 @@ public class SacrificePopup : Popup
 
     public void Valid()
     {
-        var allCard = MatchManager.Instance.Board.playerCardBench;
+        var allCard = cardToPlay.isPlayerCard ? MatchManager.Instance.Board.playerCardBench : MatchManager.Instance.Board.opponentCardBench;
         var countSelected = 0;
 
         List<ACard> sacrificeCards = new List<ACard>();

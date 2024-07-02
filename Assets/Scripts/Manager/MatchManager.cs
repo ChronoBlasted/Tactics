@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using BaseTemplate.Behaviours;
 using Unity.VisualScripting;
@@ -7,7 +8,7 @@ public class MatchManager : MonoSingleton<MatchManager>
 {
     public Board Board;
     public APlayer Player, Opponent;
-    
+
     public bool isPlayerTurn;
     public bool firstCard;
 
@@ -58,9 +59,11 @@ public class MatchManager : MonoSingleton<MatchManager>
     {
         ACard card = (ACard)cardToPlay[0];
         SacrificePopup popup = UIManager.Instance.SacrificePopup;
+        List<ACard> benchToSeek = card.isPlayerCard ? Board.playerCardBench : Board.opponentCardBench;
+
         if (card.EntityData.level > 6)
         {
-            if (Board.playerCardBench.Count < 2)
+            if (benchToSeek.Count < 2)
             {
                 card.CardRenderer.ResetCardInHand();
                 UIManager.Instance.DoFloatingText("You need atleast 2 card to play this card", Color.red);
@@ -73,7 +76,7 @@ public class MatchManager : MonoSingleton<MatchManager>
         }
         else if (card.EntityData.level > 2)
         {
-            if (Board.playerCardBench.Count < 1)
+            if (benchToSeek.Count < 1)
             {
                 card.CardRenderer.ResetCardInHand();
                 UIManager.Instance.DoFloatingText("You need atleast 1 card to play this card", Color.red);
@@ -195,7 +198,7 @@ public class MatchManager : MonoSingleton<MatchManager>
                 {
                     return;
                 }
-                var data = new object[] { Board.playerCardBench[i],Board.opponentCardBench[i], Opponent };
+                var data = new object[] { Board.playerCardBench[i], Board.opponentCardBench[i], Opponent };
                 ProcessAttack(data);
             }
         }
@@ -207,7 +210,7 @@ public class MatchManager : MonoSingleton<MatchManager>
                 {
                     return;
                 }
-                var data = new object[] { Board.opponentCardBench[i],Board.playerCardBench[i], Player };
+                var data = new object[] { Board.opponentCardBench[i], Board.playerCardBench[i], Player };
                 ProcessAttack(data);
             }
         }

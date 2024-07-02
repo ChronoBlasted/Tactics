@@ -8,7 +8,7 @@ public class DeckManager : MonoSingleton<DeckManager>
 {
     [SerializeField] int amountOfCardAtStart = 7;
     [SerializeField] int amountOfCardPerDeck = 20;
-    [SerializeField] List<EntityData> allCard = new List<EntityData>();
+    public List<EntityData> allCard = new List<EntityData>();
 
     [SerializeField] List<EntityData> playerDeck = new List<EntityData>();
     [SerializeField] List<EntityData> opponentDeck = new List<EntityData>();
@@ -81,9 +81,23 @@ public class DeckManager : MonoSingleton<DeckManager>
             {
                 card.CardRenderer.gr.enabled = true;
             }
+
+            opponentCardHolder.cg.DOFade(.5f, .1f);
+
+            foreach (var card in opponentCardHolder.cards)
+            {
+                card.CardRenderer.gr.enabled = false;
+            }
         }
         else
         {
+            opponentCardHolder.cg.DOFade(1, .1f);
+
+            foreach (var card in opponentCardHolder.cards)
+            {
+                card.CardRenderer.gr.enabled = true;
+            }
+
             playerCardHolder.cg.DOFade(.5f, .1f);
 
             foreach (var card in playerCardHolder.cards)
