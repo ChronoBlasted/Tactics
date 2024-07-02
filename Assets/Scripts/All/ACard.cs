@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class ACard : ALife
 {
-    public List<Status> StatusList;
+    public List<Status> StatusList, StatusOnImpact;
     public int BonusAttack;
     public CardRenderer CardRenderer;
     public bool isPlayerCard;
@@ -18,6 +18,9 @@ public class ACard : ALife
         this.isPlayerCard = isPlayerCard;
 
         CardRenderer.Init(EntityData);
+        
+        StatusList.Add(EntityData.status);
+        StatusOnImpact.Add(EntityData.StatusOnImpact);
 
         Health = GetMaxHealth();
 

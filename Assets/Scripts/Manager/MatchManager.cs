@@ -119,23 +119,23 @@ public class MatchManager : MonoSingleton<MatchManager>
 
     public void AddBoostFamily()
     {
-        if (fire > 2)
+        if (fire > 1)
         {
             for (int i = 0; i < Board.opponentCardBench.Count; i++)
             {
                 AddStatus(Status.BURN, Board.opponentCardBench[i]);
             }
         }
-        else if (water > 2)
+        else if (water > 1)
         {
-            for (int i = 0; i < Board.opponentCardBench.Count; i++)
+            for (int i = 0; i < Board.playerCardBench.Count; i++)
             {
                 AddStatus(Status.OVERWHELM, Board.playerCardBench[i]);
             }
         }
-        else if (grass > 2)
+        else if (grass > 1)
         {
-            for (int i = 0; i < Board.opponentCardBench.Count; i++)
+            for (int i = 0; i < Board.playerCardBench.Count; i++)
             {
                 AddStatus(Status.GROWTH, Board.playerCardBench[i]);
             }
@@ -155,6 +155,7 @@ public class MatchManager : MonoSingleton<MatchManager>
 
     public void AddStatus(Status statusToAdd, ACard cardToAffect)
     {
+        Debug.Log("statue : "+statusToAdd+"vers la carte"+ cardToAffect);
         cardToAffect.StatusList.Add(statusToAdd);
     }
 
@@ -179,7 +180,7 @@ public class MatchManager : MonoSingleton<MatchManager>
             return;
         }
 
-        if (attacker.StatusList.Contains(Status.OVERWHELM))
+        if (attacker.StatusOnImpact.Contains(Status.OVERWHELM))
         {
             if (attacker.GetAttack() > defenser.Health)
             {
@@ -189,15 +190,15 @@ public class MatchManager : MonoSingleton<MatchManager>
 
         if (!attacker.StatusList.Contains(Status.STUN)) attacker.Attack(defenser);
         defenser.Attack(attacker);
-        if (attacker.StatusList.Contains(Status.BURN)) AddStatus(Status.BURN, defenser);
-        if (attacker.StatusList.Contains(Status.CURSE)) AddStatus(Status.CURSE, defenser);
+        if (attacker.StatusOnImpact.Contains(Status.BURN)) AddStatus(Status.BURN, defenser);
+        if (attacker.StatusOnImpact.Contains(Status.CURSE)) AddStatus(Status.CURSE, defenser);
         if (defenser.StatusList.Contains(Status.VIGILANT))
         {
             RemoveStatus(defenser, Status.VIGILANT);
             return;
         }
 
-        if (attacker.StatusList.Contains(Status.STUN)) AddStatus(Status.STUN, defenser);
+        if (attacker.StatusOnImpact.Contains(Status.STUN)) AddStatus(Status.STUN, defenser);
     }
 
     public void Attack(bool isPlayerTurn)

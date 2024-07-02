@@ -13,4 +13,5 @@ public class EntityData : ScriptableObject
     public int maxHealth;
     public int level;
     public Status status;
+    public Status StatusOnImpact;
 }
