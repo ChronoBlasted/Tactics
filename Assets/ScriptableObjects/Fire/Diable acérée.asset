@@ -16,8 +16,8 @@ MonoBehaviour:
   visual: {fileID: 21300000, guid: 1bb0a3f58d98f1548a00ab5e989e1358, type: 3}
   element: 1
   description: 
-  attack: 3
-  maxHealth: 10
-  level: 5
-  status: 0
-  StatusOnImpact: 0
+  attack: 5
+  maxHealth: 6
+  level: 6
+  status: 3
+  StatusOnImpact: 6
